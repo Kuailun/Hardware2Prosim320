@@ -55,7 +55,7 @@
             this.checkBox_Glare.AutoSize = true;
             this.checkBox_Glare.Location = new System.Drawing.Point(13, 13);
             this.checkBox_Glare.Name = "checkBox_Glare";
-            this.checkBox_Glare.Size = new System.Drawing.Size(42, 16);
+            this.checkBox_Glare.Size = new System.Drawing.Size(54, 16);
             this.checkBox_Glare.TabIndex = 0;
             this.checkBox_Glare.Text = "Glare";
             this.checkBox_Glare.UseVisualStyleBackColor = true;
@@ -158,7 +158,7 @@
             this.checkBox_CDUR.Name = "checkBox_CDUR";
             this.checkBox_CDUR.Size = new System.Drawing.Size(48, 16);
             this.checkBox_CDUR.TabIndex = 9;
-            this.checkBox_CDUR.Text = "CDUL";
+            this.checkBox_CDUR.Text = "CDUR";
             this.checkBox_CDUR.UseVisualStyleBackColor = true;
             this.checkBox_CDUR.CheckedChanged += new System.EventHandler(this.checkBox_CDUR_CheckedChanged);
             // 

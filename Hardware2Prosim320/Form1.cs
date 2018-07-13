@@ -33,6 +33,10 @@ namespace Hardware2Prosim320
         // 数据区
         A320_Data_Glare a320_data_glare;
         A320_Data_TQ a320_data_tq;
+        A320_Data_CDU a320_data_cdu_L;
+        A320_Data_CDU a320_data_cdu_R;
+        A320_Data_FC_YOKE a320_data_yoke_L;
+        A320_Data_FC_YOKE a320_data_yoke_R;
 
 
         public Hardware2Prosim()
@@ -117,18 +121,22 @@ namespace Hardware2Prosim320
             }
             if(bStickL)
             {
+                a320_data_yoke_L = new A320_Data_FC_YOKE();
                 OpenCom(ref sp_StickL, textBox_StickL.Text, 9600);
             }
             if(bStickR)
             {
+                a320_data_yoke_R = new A320_Data_FC_YOKE();
                 OpenCom(ref sp_StickR, textBox_StickR.Text, 9600);
             }
             if(bCDUL)
             {
+                a320_data_cdu_L = new A320_Data_CDU();
                 OpenCom(ref sp_CDUL, textBox_CDUL.Text, 9600);
             }
             if(bCDUR)
             {
+                a320_data_cdu_R = new A320_Data_CDU();
                 OpenCom(ref sp_CDUR, textBox_CDUR.Text, 9600);
             }
         }
@@ -224,6 +232,9 @@ namespace Hardware2Prosim320
             }
         }
 
+        /// <summary>
+        /// 将本地变量与Prosim变量进行映射
+        /// </summary>
         public void ConnectProsim()
         {
             if(a320_data_glare!=null)
@@ -345,8 +356,189 @@ namespace Hardware2Prosim320
                 a320_data_tq.A_FC_THROTTLE_LEFT_INPUT = new DataRef("system.analog.A_FC_THROTTLE_LEFT_INPUT", 100, connection);
                 a320_data_tq.A_FC_THROTTLE_RIGHT_INPUT = new DataRef("system.analog.A_FC_THROTTLE_RIGHT_INPUT", 100, connection);
             }
+
+            //CDUL
+            if(a320_data_cdu_L!=null)
+            {
+                a320_data_cdu_L.A_CDU_BRIGHTNESS = new DataRef("system.analog.A_CDU1_BRIGHTNESS",100,connection);
+                a320_data_cdu_L.I_CDU_FAIL = new DataRef("system.indicators.I_CDU1_FAIL", 100, connection);
+                a320_data_cdu_L.I_CDU_FM = new DataRef("system.indicators.I_CDU1_FM", 100, connection);
+                a320_data_cdu_L.I_CDU_FM1 = new DataRef("system.indicators.I_CDU1_FM1", 100, connection);
+                a320_data_cdu_L.I_CDU_FM2 = new DataRef("system.indicators.I_CDU1_FM2", 100, connection);
+                a320_data_cdu_L.I_CDU_IND = new DataRef("system.indicators.I_CDU1_IND", 100, connection);
+                a320_data_cdu_L.I_CDU_MCDU_MENU = new DataRef("system.indicators.I_CDU1_MCDU_MENU", 100, connection);
+                a320_data_cdu_L.I_CDU_RDY = new DataRef("system.indicators.I_CDU1_RDY", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_0 = new DataRef("system.switches.S_CDU1_KEY_0", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_1 = new DataRef("system.switches.S_CDU1_KEY_1", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_2 = new DataRef("system.switches.S_CDU1_KEY_2", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_3 = new DataRef("system.switches.S_CDU1_KEY_3", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_4 = new DataRef("system.switches.S_CDU1_KEY_4", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_5 = new DataRef("system.switches.S_CDU1_KEY_5", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_6 = new DataRef("system.switches.S_CDU1_KEY_6", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_7 = new DataRef("system.switches.S_CDU1_KEY_7", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_8 = new DataRef("system.switches.S_CDU1_KEY_8", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_9 = new DataRef("system.switches.S_CDU1_KEY_9", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_A = new DataRef("system.switches.S_CDU1_KEY_A", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_AIRPORT = new DataRef("system.switches.S_CDU1_KEY_AIRPORT", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_ARROW_DOWN = new DataRef("system.switches.S_CDU1_KEY_ARROW_DOWN", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_ARROW_LEFT = new DataRef("system.switches.S_CDU1_KEY_ARROW_LEFT", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_ARROW_RIGHT = new DataRef("system.switches.S_CDU1_KEY_ARROW_RIGHT", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_ARROW_UP = new DataRef("system.switches.S_CDU1_KEY_ARROW_UP", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_ATC_COM = new DataRef("system.switches.S_CDU1_KEY_ATC_COM", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_B = new DataRef("system.switches.S_CDU1_KEY_B", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_C = new DataRef("system.switches.S_CDU1_KEY_C", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_CLEAR = new DataRef("system.switches.S_CDU1_KEY_CLEAR", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_D = new DataRef("system.switches.S_CDU1_KEY_D", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_DATA = new DataRef("system.switches.S_CDU1_KEY_DATA", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_DIR = new DataRef("system.switches.S_CDU1_KEY_DIR", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_DOT = new DataRef("system.switches.S_CDU1_KEY_DOT", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_E = new DataRef("system.switches.S_CDU1_KEY_E", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_F = new DataRef("system.switches.S_CDU1_KEY_F", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_FLPN = new DataRef("system.switches.S_CDU1_KEY_FLPN", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_FUEL_PRED = new DataRef("system.switches.S_CDU1_KEY_FUEL_PRED", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_G = new DataRef("system.switches.S_CDU1_KEY_G", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_H = new DataRef("system.switches.S_CDU1_KEY_H", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_I = new DataRef("system.switches.S_CDU1_KEY_I", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_INIT = new DataRef("system.switches.S_CDU1_KEY_INIT", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_J = new DataRef("system.switches.S_CDU1_KEY_J", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_K = new DataRef("system.switches.S_CDU1_KEY_K", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_L = new DataRef("system.switches.S_CDU1_KEY_L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK1L = new DataRef("system.switches.S_CDU1_KEY_LSK1L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK1R = new DataRef("system.switches.S_CDU1_KEY_LSK1R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK2L = new DataRef("system.switches.S_CDU1_KEY_LSK2L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK2R = new DataRef("system.switches.S_CDU1_KEY_LSK2R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK3L = new DataRef("system.switches.S_CDU1_KEY_LSK3L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK3R = new DataRef("system.switches.S_CDU1_KEY_LSK3R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK4L = new DataRef("system.switches.S_CDU1_KEY_LSK4L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK4R = new DataRef("system.switches.S_CDU1_KEY_LSK4R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK5L = new DataRef("system.switches.S_CDU1_KEY_LSK5L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK5R = new DataRef("system.switches.S_CDU1_KEY_LSK5R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK6L = new DataRef("system.switches.S_CDU1_KEY_LSK6L", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_LSK6R = new DataRef("system.switches.S_CDU1_KEY_LSK6R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_M = new DataRef("system.switches.S_CDU1_KEY_M", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_MENU = new DataRef("system.switches.S_CDU1_KEY_MENU", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_MINUS = new DataRef("system.switches.S_CDU1_KEY_MINUS", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_N = new DataRef("system.switches.S_CDU1_KEY_N", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_O = new DataRef("system.switches.S_CDU1_KEY_O", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_OVFLY = new DataRef("system.switches.S_CDU1_KEY_OVFLY", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_P = new DataRef("system.switches.S_CDU1_KEY_P", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_PERF = new DataRef("system.switches.S_CDU1_KEY_PERF", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_PROG = new DataRef("system.switches.S_CDU1_KEY_PROG", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_Q = new DataRef("system.switches.S_CDU1_KEY_Q", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_R = new DataRef("system.switches.S_CDU1_KEY_R", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_RAD_NAV = new DataRef("system.switches.S_CDU1_KEY_RAD_NAV", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_S = new DataRef("system.switches.S_CDU1_KEY_S", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_SEC_FPLN = new DataRef("system.switches.S_CDU1_KEY_SEC_FPLN", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_SLASH = new DataRef("system.switches.S_CDU1_KEY_SLASH", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_SPACE = new DataRef("system.switches.S_CDU1_KEY_SPACE", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_T = new DataRef("system.switches.S_CDU1_KEY_T", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_U = new DataRef("system.switches.S_CDU1_KEY_U", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_V = new DataRef("system.switches.S_CDU1_KEY_V", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_W = new DataRef("system.switches.S_CDU1_KEY_W", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_X = new DataRef("system.switches.S_CDU1_KEY_X", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_Y = new DataRef("system.switches.S_CDU1_KEY_Y", 100, connection);
+                a320_data_cdu_L.S_CDU_KEY_Z = new DataRef("system.switches.S_CDU1_KEY_Z", 100, connection);
+            }
+
+            //CDUR
+            if (a320_data_cdu_R != null)
+            {
+                a320_data_cdu_R.A_CDU_BRIGHTNESS = new DataRef("system.analog.A_CDU2_BRIGHTNESS", 100, connection);
+                a320_data_cdu_R.I_CDU_FM = new DataRef("system.indicators.I_CDU2_FM", 100, connection);
+                a320_data_cdu_R.I_CDU_FM1 = new DataRef("system.indicators.I_CDU2_FM1", 100, connection);
+                a320_data_cdu_R.I_CDU_FM2 = new DataRef("system.indicators.I_CDU2_FM2", 100, connection);
+                a320_data_cdu_R.I_CDU_IND = new DataRef("system.indicators.I_CDU2_IND", 100, connection);
+                a320_data_cdu_R.I_CDU_MCDU_MENU = new DataRef("system.indicators.I_CDU2_MCDU_MENU", 100, connection);
+                a320_data_cdu_R.I_CDU_RDY = new DataRef("system.indicators.I_CDU2_RDY", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_0 = new DataRef("system.switches.S_CDU2_KEY_0", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_1 = new DataRef("system.switches.S_CDU2_KEY_1", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_2 = new DataRef("system.switches.S_CDU2_KEY_2", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_3 = new DataRef("system.switches.S_CDU2_KEY_3", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_4 = new DataRef("system.switches.S_CDU2_KEY_4", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_5 = new DataRef("system.switches.S_CDU2_KEY_5", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_6 = new DataRef("system.switches.S_CDU2_KEY_6", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_7 = new DataRef("system.switches.S_CDU2_KEY_7", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_8 = new DataRef("system.switches.S_CDU2_KEY_8", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_9 = new DataRef("system.switches.S_CDU2_KEY_9", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_A = new DataRef("system.switches.S_CDU2_KEY_A", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_AIRPORT = new DataRef("system.switches.S_CDU2_KEY_AIRPORT", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_ARROW_DOWN = new DataRef("system.switches.S_CDU2_KEY_ARROW_DOWN", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_ARROW_LEFT = new DataRef("system.switches.S_CDU2_KEY_ARROW_LEFT", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_ARROW_RIGHT = new DataRef("system.switches.S_CDU2_KEY_ARROW_RIGHT", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_ARROW_UP = new DataRef("system.switches.S_CDU2_KEY_ARROW_UP", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_ATC_COM = new DataRef("system.switches.S_CDU2_KEY_ATC_COM", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_B = new DataRef("system.switches.S_CDU2_KEY_B", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_C = new DataRef("system.switches.S_CDU2_KEY_C", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_CLEAR = new DataRef("system.switches.S_CDU2_KEY_CLEAR", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_D = new DataRef("system.switches.S_CDU2_KEY_D", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_DATA = new DataRef("system.switches.S_CDU2_KEY_DATA", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_DIR = new DataRef("system.switches.S_CDU2_KEY_DIR", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_DOT = new DataRef("system.switches.S_CDU2_KEY_DOT", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_E = new DataRef("system.switches.S_CDU2_KEY_E", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_F = new DataRef("system.switches.S_CDU2_KEY_F", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_FLPN = new DataRef("system.switches.S_CDU2_KEY_FLPN", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_FUEL_PRED = new DataRef("system.switches.S_CDU2_KEY_FUEL_PRED", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_G = new DataRef("system.switches.S_CDU2_KEY_G", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_H = new DataRef("system.switches.S_CDU2_KEY_H", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_I = new DataRef("system.switches.S_CDU2_KEY_I", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_INIT = new DataRef("system.switches.S_CDU2_KEY_INIT", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_J = new DataRef("system.switches.S_CDU2_KEY_J", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_K = new DataRef("system.switches.S_CDU2_KEY_K", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_L = new DataRef("system.switches.S_CDU2_KEY_L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK1L = new DataRef("system.switches.S_CDU2_KEY_LSK1L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK1R = new DataRef("system.switches.S_CDU2_KEY_LSK1R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK2L = new DataRef("system.switches.S_CDU2_KEY_LSK2L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK2R = new DataRef("system.switches.S_CDU2_KEY_LSK2R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK3L = new DataRef("system.switches.S_CDU2_KEY_LSK3L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK3R = new DataRef("system.switches.S_CDU2_KEY_LSK3R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK4L = new DataRef("system.switches.S_CDU2_KEY_LSK4L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK4R = new DataRef("system.switches.S_CDU2_KEY_LSK4R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK5L = new DataRef("system.switches.S_CDU2_KEY_LSK5L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK5R = new DataRef("system.switches.S_CDU2_KEY_LSK5R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK6L = new DataRef("system.switches.S_CDU2_KEY_LSK6L", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_LSK6R = new DataRef("system.switches.S_CDU2_KEY_LSK6R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_M = new DataRef("system.switches.S_CDU2_KEY_M", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_MENU = new DataRef("system.switches.S_CDU2_KEY_MENU", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_MINUS = new DataRef("system.switches.S_CDU2_KEY_MINUS", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_N = new DataRef("system.switches.S_CDU2_KEY_N", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_O = new DataRef("system.switches.S_CDU2_KEY_O", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_OVFLY = new DataRef("system.switches.S_CDU2_KEY_OVFLY", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_P = new DataRef("system.switches.S_CDU2_KEY_P", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_PERF = new DataRef("system.switches.S_CDU2_KEY_PERF", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_PROG = new DataRef("system.switches.S_CDU2_KEY_PROG", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_Q = new DataRef("system.switches.S_CDU2_KEY_Q", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_R = new DataRef("system.switches.S_CDU2_KEY_R", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_RAD_NAV = new DataRef("system.switches.S_CDU2_KEY_RAD_NAV", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_S = new DataRef("system.switches.S_CDU2_KEY_S", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_SEC_FPLN = new DataRef("system.switches.S_CDU2_KEY_SEC_FPLN", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_SLASH = new DataRef("system.switches.S_CDU2_KEY_SLASH", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_SPACE = new DataRef("system.switches.S_CDU2_KEY_SPACE", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_T = new DataRef("system.switches.S_CDU2_KEY_T", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_U = new DataRef("system.switches.S_CDU2_KEY_U", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_V = new DataRef("system.switches.S_CDU2_KEY_V", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_W = new DataRef("system.switches.S_CDU2_KEY_W", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_X = new DataRef("system.switches.S_CDU2_KEY_X", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_Y = new DataRef("system.switches.S_CDU2_KEY_Y", 100, connection);
+                a320_data_cdu_R.S_CDU_KEY_Z = new DataRef("system.switches.S_CDU2_KEY_Z", 100, connection);
+            }
+
+            //Yoke L
+            if (a320_data_yoke_L!=null)
+            {
+                a320_data_yoke_L.A_FC_PITCH = new DataRef("system.analog.A_FC_CAPT_PITCH", 100, connection);
+                a320_data_yoke_L.A_FC_ROLL = new DataRef("system.analog.A_FC_CAPT_ROLL", 100, connection);
+                a320_data_yoke_L.A_FC_TILLER = new DataRef("system.analog.A_FC_CAPT_TILLER", 100, connection);
+            }
+
+            //Yoke R
+            if(a320_data_yoke_R!=null)
+            {
+                a320_data_yoke_R.A_FC_PITCH = new DataRef("system.analog.A_FC_FO_PITCH", 100, connection);
+                a320_data_yoke_R.A_FC_ROLL = new DataRef("system.analog.A_FC_FO_ROLL", 100, connection);
+                a320_data_yoke_R.A_FC_TILLER = new DataRef("system.analog.A_FC_FO_TILLER", 100, connection);
+            }
         }
-        private void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        public void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
             try
@@ -355,62 +547,177 @@ namespace Hardware2Prosim320
                 {
                     byte[] byteRead = new byte[sp.BytesToRead];
                     sp.Read(byteRead, 0, byteRead.Length);
-                    if (byteRead[0] == 240)
+
+                    //初始化接口转化
+                    HardwareCalculation h=new HardwareCalculation();
+
+
+                    //右侧杆 操作
+                    if (byteRead[0] == 0xA3 && byteRead.Length == 8)
                     {
-                        int eng_l = byteRead[1];
-                        int eng_r = byteRead[2];
-                        if (eng_l >= 128)
-                        {
-                            eng_l = eng_l - 256;
-                        }
-                        if (eng_r >= 128)
-                        {
-                            eng_r = eng_r - 256;
-                        }
+                        h.H2P_StickR(byteRead, ref a320_data_yoke_R);
+                        return;
+                    }
 
-                        if (eng_l < 0)
-                        {
-                            eng_l = (eng_l + 20) * 52;
-                        }
-                        else if (eng_l >= 0 && eng_l <= 24)
-                        {
-                            eng_l = 2001 + eng_l * 41;
-                        }
-                        else if (eng_l >= 25 && eng_l <= 34)
-                        {
-                            eng_l = 3001 + (eng_l - 25) * 99;
-                        }
-                        else if (eng_l >= 35 && eng_l <= 44)
-                        {
-                            eng_l = 4001 + (eng_l - 35) * 99;
-                        }
-                        else if (eng_l >= 45)
-                        {
-                            eng_l = 5001;
-                        }
+                    //左MCDU 按键1
+                    if (byteRead[0] == 0xA4 && byteRead.Length == 8)
+                    {
+                        h.H2P_MCDU_L_1(byteRead, ref a320_data_cdu_L);
+                        return;
+                    }
 
-                        if (eng_r < 0)
-                        {
-                            eng_r = (eng_r + 20) * 52;
-                        }
-                        else if (eng_r >= 0 && eng_r <= 24)
-                        {
-                            eng_r = 2001 + eng_r * 41;
-                        }
-                        else if (eng_r >= 25 && eng_r <= 34)
-                        {
-                            eng_r = 3001 + (eng_r - 25) * 99;
-                        }
-                        else if (eng_r >= 35 && eng_r <= 44)
-                        {
-                            eng_r = 4001 + (eng_r - 35) * 99;
-                        }
-                        else if (eng_r >= 45)
-                        {
-                            eng_r = 5001;
-                        }
+                    //左MCDU 按键2
+                    if (byteRead[0] == 0xA5 && byteRead.Length == 8)
+                    {
+                        h.H2P_MCDU_L_2(byteRead, ref a320_data_cdu_L);
+                        return;
+                    }
 
-                        Console.WriteLine("{0},{1}", eng_l, eng_r);
+                    //左MCDU 按键2
+                    if (byteRead[0] == 0xA6 && byteRead.Length == 8)
+                    {
+                        h.H2P_MCDU_L_3(byteRead, ref a320_data_cdu_L);
+                        return;
+                    }
+
+                    //左MCDU 指示灯1
+                    if (byteRead[0] == 0xA7 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }                    
+
+                    //遮光罩 EFIS左 按键
+                    if (byteRead[0] == 0xC0 && byteRead.Length == 8)
+                    {
+                        h.H2P_EFIS_L_1(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 EFIS左 指示灯
+                    if (byteRead[0] == 0xC1 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 EFIS左 波段开关
+                    if (byteRead[0] == 0xC2 && byteRead.Length == 8)
+                    {
+                        h.H2P_EFIS_L_2(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 EFIS左 数码管
+                    if (byteRead[0] == 0xC3 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 EFIS左 编码器
+                    if (byteRead[0] == 0xC4 && byteRead.Length == 8)
+                    {
+                        h.H2P_EFIS_L_3(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 EFIS右 按键
+                    if (byteRead[0] == 0xD0 && byteRead.Length == 8)
+                    {
+                        h.H2P_EFIS_R_1(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 EFIS右 指示灯
+                    if (byteRead[0] == 0xD1 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 EFIS右 波段开关
+                    if (byteRead[0] == 0xD2 && byteRead.Length == 8)
+                    {
+                        h.H2P_EFIS_R_2(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 EFIS右 数码管
+                    if (byteRead[0] == 0xD3 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 EFIS右 编码器
+                    if (byteRead[0] == 0xD4 && byteRead.Length == 8)
+                    {
+                        h.H2P_EFIS_R_3(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 FCU   按键 
+                    if (byteRead[0] == 0xE0 && byteRead.Length == 8)
+                    {
+                        h.H2P_FCU_1(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 FCU   指示灯 
+                    if (byteRead[0] == 0xE1 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 FCU   波段开关 
+                    if (byteRead[0] == 0xE2 && byteRead.Length == 8)
+                    {
+                        h.H2P_FCU_2(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //遮光罩 FCU   数码管 1
+                    if (byteRead[0] == 0xE3 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 FCU   数码管 2
+                    if (byteRead[0] == 0xE4 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 FCU   数码管 3
+                    if (byteRead[0] == 0xE5 && byteRead.Length == 8)
+                    {
+
+                        return;
+                    }
+
+                    //遮光罩 FCU   编码器
+                    if (byteRead[0] == 0xE6 && byteRead.Length == 8)
+                    {
+                        h.H2P_FCU_3(byteRead, ref a320_data_glare);
+                        return;
+                    }
+
+                    //油门台   油门操作
+                    if (byteRead[0] == 0xF0 && byteRead.Length == 8)
+                    {
+                        h.H2P_TQ1(byteRead, ref a320_data_tq);
+                        return;
+                    }
+
+                    //油门台   配平轮操作
+                    if (byteRead[0] == 0xF1 && byteRead.Length == 8)
+                    {
+
+                        return;
                     }
                 }
             }
@@ -421,8 +728,7 @@ namespace Hardware2Prosim320
 
             //throw new NotImplementedException();
         }
-
-
+        
         private void checkBox_Glare_CheckedChanged(object sender, EventArgs e)
         {
             textBox_Glare.Enabled = false;
