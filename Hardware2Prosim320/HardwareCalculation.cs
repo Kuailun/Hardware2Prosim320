@@ -186,6 +186,47 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
+        /// 左MCDU 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        public byte[] P2H_MCDU_L_1(ref A320_Data_CDU p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xA7;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_CDU_MCDU_MENU.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_CDU_FAIL.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_CDU_FM.value) == 2)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_CDU_FM1.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_CDU_IND.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            if ((byte)(p_data.I_CDU_RDY.value) == 2)
+            {
+                p_byteSend[1] += 4;
+            }
+            if ((byte)(p_data.I_CDU_FM2.value) == 2)
+            {
+                p_byteSend[1] += 2;
+            }
+            return p_byteSend;
+        }
+
+        /// <summary>
         /// 遮光罩 EFIS左 按键
         /// </summary>
         /// <param name="p_byteRead"></param>
@@ -273,6 +314,102 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
+        /// 遮光罩 EFIS左 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_EFIS_L_1(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xC1;
+            p_byteSend[1]= 0;
+            if((byte)(p_data.I_FCU_EFIS1_CSTR.value)==2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_WPT.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_VORD.value) == 2)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_NDB.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_ARPT.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_FD.value) == 2)
+            {
+                p_byteSend[1] += 4;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_LS.value) == 2)
+            {
+                p_byteSend[1] += 2;
+            }
+            if ((byte)(p_data.I_FCU_EFIS1_QNH.value) == 2)
+            {
+                p_byteSend[1] += 1;
+            }
+
+            return p_byteSend;
+        }
+
+        /// <summary>
+        /// 遮光罩 EFIS左 数码管
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_EFIS_L_2(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xC3;
+            if ((byte)(p_data.I_FCU_EFIS1_QNH.value) == 0)  //QFE
+            {
+                p_byteSend[1] = 0x16;
+                p_byteSend[2] = 0x05;
+                p_byteSend[3] = 0x18;
+                p_byteSend[4] = 0x19;
+                return p_byteSend;
+            }
+            if((int)(p_data.S_FCU_EFIS1_BARO_MODE.value)==1)
+            {
+                double num = (double)p_data.N_FCU_EFIS1_BARO_HPA.value;
+                int num_qian = (int)(num / 1000);
+                int num_bai = (int)((num-num_qian*1000) / 100);
+                int num_shi = (int)((num -num_qian*1000-100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
+
+                p_byteSend[1] = (byte)num_qian;
+                p_byteSend[2] = (byte)num_bai;
+                p_byteSend[3] = (byte)num_shi;
+                p_byteSend[4] = (byte)num_ge;
+                return p_byteSend;
+            }
+            else if((int)(p_data.S_FCU_EFIS1_BARO_MODE.value) == 0)
+            {
+                double num = (double)p_data.N_FCU_EFIS1_BARO_INCH.value;
+                int num_qian = (int)(num / 1000);
+                int num_bai = (int)((num - num_qian * 1000) / 100);
+                int num_shi = (int)((num - num_qian * 1000 - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
+
+                p_byteSend[1] = (byte)num_qian;
+                p_byteSend[2] = (byte)(num_bai+0x80);
+                p_byteSend[3] = (byte)num_shi;
+                p_byteSend[4] = (byte)num_ge;
+                return p_byteSend;
+            }
+            return p_byteSend;
+        }
+
+        /// <summary>
         /// 遮光罩 EFIS右 按键
         /// </summary>
         /// <param name="p_byteRead"></param>
@@ -357,6 +494,102 @@ namespace Hardware2Prosim320
             if (p_byteRead[1] > 100)        p_data.E_FCU_EFIS2_BARO.value = 1;
             else if (p_byteRead[1] < 100)   p_data.E_FCU_EFIS2_BARO.value = -1;
             else                            p_data.E_FCU_EFIS2_BARO.value = 0;
+        }
+
+        /// <summary>
+        /// 遮光罩 EFIS右 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_EFIS_R_1(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xD1;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_FCU_EFIS2_CSTR.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_WPT.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_VORD.value) == 2)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_NDB.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_ARPT.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_FD.value) == 2)
+            {
+                p_byteSend[1] += 4;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_LS.value) == 2)
+            {
+                p_byteSend[1] += 2;
+            }
+            if ((byte)(p_data.I_FCU_EFIS2_QNH.value) == 2)
+            {
+                p_byteSend[1] += 1;
+            }
+
+            return p_byteSend;
+        }
+
+        /// <summary>
+        /// 遮光罩 EFIS右 数码管
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_EFIS_R_2(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xD3;
+            if ((byte)(p_data.I_FCU_EFIS2_QNH.value) == 0)  //QFE
+            {
+                p_byteSend[1] = 0x16;
+                p_byteSend[2] = 0x05;
+                p_byteSend[3] = 0x18;
+                p_byteSend[4] = 0x19;
+                return p_byteSend;
+            }
+            if ((int)(p_data.S_FCU_EFIS2_BARO_MODE.value) == 1)
+            {
+                double num = (double)p_data.N_FCU_EFIS2_BARO_HPA.value;
+                int num_qian = (int)(num / 1000);
+                int num_bai = (int)((num - num_qian * 1000) / 100);
+                int num_shi = (int)((num - num_qian * 1000 - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
+
+                p_byteSend[1] = (byte)num_qian;
+                p_byteSend[2] = (byte)num_bai;
+                p_byteSend[3] = (byte)num_shi;
+                p_byteSend[4] = (byte)num_ge;
+                return p_byteSend;
+            }
+            else if ((int)(p_data.S_FCU_EFIS2_BARO_MODE.value) == 0)
+            {
+                double num = (double)p_data.N_FCU_EFIS2_BARO_INCH.value;
+                int num_qian = (int)(num / 1000);
+                int num_bai = (int)((num - num_qian * 1000) / 100);
+                int num_shi = (int)((num - num_qian * 1000 - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
+
+                p_byteSend[1] = (byte)num_qian;
+                p_byteSend[2] = (byte)(num_bai + 0x80);
+                p_byteSend[3] = (byte)num_shi;
+                p_byteSend[4] = (byte)num_ge;
+                return p_byteSend;
+            }
+            return p_byteSend;
         }
 
         /// <summary>
@@ -489,6 +722,223 @@ namespace Hardware2Prosim320
             if (p_byteRead[4] > 100)        p_data.E_FCU_VS.value = 1;
             else if (p_byteRead[4] < 100)   p_data.E_FCU_VS.value = -1;
             else                            p_data.E_FCU_VS.value = 0;
+        }
+
+        /// <summary>
+        /// 遮光罩 FCU   指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_FCU_1(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xE1;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_FCU_AP1.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_FCU_AP2.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_FCU_ATHR.value) == 2)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_FCU_LOC.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_FCU_EXPED.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            if ((byte)(p_data.I_FCU_APPR.value) == 2)
+            {
+                p_byteSend[1] += 4;
+            }
+            if ((byte)(p_data.I_FCU_MACH_MODE.value) == 2)
+            {
+                p_byteSend[1] += 2;
+            }
+            if ((byte)(p_data.I_FCU_MACH_MODE.value) == 0)
+            {
+                p_byteSend[1] += 1;
+            }
+
+            p_byteSend[2] = 0;
+            if ((byte)(p_data.I_FCU_HEADING_VS_MODE.value) == 2)//HDG
+            {
+                p_byteSend[2] += 128;
+                p_byteSend[2] += 4;
+            }
+            if ((byte)(p_data.I_FCU_HEADING_VS_MODE.value) == 0)//TRK
+            {
+                p_byteSend[2] += 64;
+                p_byteSend[2] += 8;
+            }
+            if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 0)//VS 0
+            {
+                p_byteSend[2] += 32;
+                p_byteSend[2] += 2;
+            }
+            if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 2)//FPA  2
+            {
+                p_byteSend[2] += 16;
+                p_byteSend[2] += 1;
+            }
+            /*if ((byte)(p_data.I_FCU_EXPED.value) == 2)
+            {
+                p_byteSend[2] += 8;
+            }
+            if ((byte)(p_data.I_FCU_APPR.value) == 2)
+            {
+                p_byteSend[2] += 4;
+            }
+            if ((byte)(p_data.I_FCU_MACH_MODE.value) == 2)
+            {
+                p_byteSend[2] += 2;
+            }
+            if ((byte)(p_data.I_FCU_MACH_MODE.value) == 0)
+            {
+                p_byteSend[2] += 1;
+            }*/
+
+            p_byteSend[3] = 0;
+            if ((byte)(p_data.I_FCU_SPEED_MANAGED.value) == 2)
+            {
+                p_byteSend[3] += 128;
+            }
+            if ((byte)(p_data.I_FCU_HEADING_MANAGED.value) == 2)
+            {
+                p_byteSend[3] += 64;
+            }
+            double num = (double)p_data.N_FCU_VS.value;
+            if(num>=0)
+            {
+                p_byteSend[3] += 2;
+                p_byteSend[3] += 1;
+            }
+            else
+            {
+                p_byteSend[3] += 2;
+            }
+            /*if ((byte)(p_data.I.value) == 0)//VS 0
+            {
+                p_byteSend[3] += 32;
+                p_byteSend[3] += 2;
+            }
+            if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 2)//FPA  2
+            {
+                p_byteSend[3] += 16;
+                p_byteSend[3] += 1;
+            }*/
+
+            return p_byteSend;
+        }
+
+        /// <summary>
+        /// 遮光罩 FCU   数码管1
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_FCU_2(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xE3;
+            double num = (double)p_data.N_FCU_SPEED.value;
+            int num_bai = (int)(num/ 100);
+            int num_shi = (int)((num- 100 * num_bai) / 10);
+            int num_ge = (int)(num % 10);
+
+            p_byteSend[1] = (byte)num_bai;
+            p_byteSend[2] = (byte)num_shi;
+            p_byteSend[3] = (byte)num_ge;
+
+            num = (double)p_data.N_FCU_HEADING.value;
+            num_bai = (int)(num / 100);
+            num_shi = (int)((num - 100 * num_bai) / 10);
+            num_ge = (int)(num % 10);
+
+            p_byteSend[4] = (byte)num_bai;
+            p_byteSend[5] = (byte)num_shi;
+            p_byteSend[6] = (byte)num_ge;
+
+            return p_byteSend;
+        }
+
+        /// <summary>
+        /// 遮光罩 FCU   数码管2
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_FCU_3(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+            p_byteSend[0] = 0xE4;
+
+            if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 0)
+            {
+                double num = (double)p_data.N_FCU_VS.value;
+                if(num<0)
+                {
+                    num = -num;
+                }
+                int num_qian = (int)(num / 1000);
+                int num_bai = (int)((num - num_qian * 1000) / 100);
+                int num_shi = (int)((num - num_qian * 1000 - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
+
+                p_byteSend[1] = (byte)num_qian;
+                p_byteSend[2] = (byte)(num_bai);
+                p_byteSend[3] = 20;
+                p_byteSend[4] = 20;   
+            }
+            else if((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 2)
+            {
+                double num = (double)p_data.N_FCU_VS.value;
+                if (num < 0)
+                {
+                    num = -num;
+                }
+                int num_qian = (int)(num / 1000);
+                int num_bai = (int)((num - num_qian * 1000) / 100);
+                int num_shi = (int)((num - num_qian * 1000 - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
+
+                p_byteSend[1] = 0x16;
+                p_byteSend[2] = 0x16;
+                p_byteSend[3] = (byte)(num_qian+0x80);
+                p_byteSend[4] = (byte)(num_bai);
+            }
+            return p_byteSend;
+        }
+
+        /// <summary>
+        /// 遮光罩 FCU   数码管3
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_FCU_4(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+            p_byteSend[0] = 0xE5;
+
+            double num = (double)p_data.N_FCU_ALTITUDE.value;
+            int num_wan = (int)(num / 10000);
+            int num_qian = (int)((num - num_wan * 10000) / 1000);
+            int num_bai = (int)((num/100) % 10);
+
+            p_byteSend[1] = (byte)num_wan;
+            p_byteSend[2] = (byte)num_qian;
+            p_byteSend[3] = (byte)num_bai;
+            p_byteSend[4] = 0x00;
+            p_byteSend[5] = 0x00;
+
+            return p_byteSend;
         }
 
         /// <summary>

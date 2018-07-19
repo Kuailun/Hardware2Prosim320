@@ -48,6 +48,7 @@ namespace Hardware2Prosim320
         public DataRef I_FCU_SPEED_MANAGED;
         public DataRef I_FCU_SPEED_MODE;
         public DataRef I_FCU_TRACK_FPA_MODE;
+        public DataRef N_FCU_ALTITUDE;
         public DataRef N_FCU_HEADING;
         public DataRef N_FCU_LIGHTING;
         public DataRef N_FCU_LIGHTING_TEXT;

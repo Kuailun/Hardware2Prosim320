@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,6 +17,8 @@ namespace Hardware2Prosim320
     {
         // Our main ProSim connection
         ProSimConnect connection = new ProSimConnect();
+        //初始化接口转化
+        HardwareCalculation h = new HardwareCalculation();
         // 声明串口
         SerialPort sp_Glare = null;
         SerialPort sp_TQ = null;
@@ -37,6 +40,17 @@ namespace Hardware2Prosim320
         A320_Data_CDU a320_data_cdu_R;
         A320_Data_FC_YOKE a320_data_yoke_L;
         A320_Data_FC_YOKE a320_data_yoke_R;
+        // 声明线程
+        private Thread td_Glare;
+        private Thread td_TQ;
+        private Thread td_StickL;
+        private Thread td_StickR;
+        private Thread td_CDUL;
+        private Thread td_CDUR;
+        private List<byte> buffer = new List<byte>(80);
+        // 其他参数
+        int interval = 200;
+        bool canStop = false;
 
 
         public Hardware2Prosim()
@@ -58,6 +72,13 @@ namespace Hardware2Prosim320
             textBox_CDUR.Enabled = false;
             textBox_StickL.Enabled = false;
             textBox_StickR.Enabled = false;
+
+            td_Glare = new Thread(td_GlareSend);
+            td_CDUL = new Thread(td_CDULSend);
+            td_CDUR = new Thread(td_CDURSend);
+            td_StickL = new Thread(td_StickLSend);
+            td_StickR = new Thread(td_StickRSend);
+            td_TQ = new Thread(td_TQSend);
         }
 
         /// <summary>
@@ -92,7 +113,10 @@ namespace Hardware2Prosim320
                 //映射Prosim变量到类中
                 
                 OpenComms();
+                
                 ConnectProsim();
+                Thread.Sleep(200);
+                StartThreads();
             }
             else
             {
@@ -100,6 +124,7 @@ namespace Hardware2Prosim320
                 connection = new ProSimConnect();
                 WriteLine("已断开与ProSim320的连接");
                 button_Connect.Text = "连接";
+                StopThreads();
                 CloseComms();
             }   
         }
@@ -278,6 +303,7 @@ namespace Hardware2Prosim320
                 a320_data_glare.I_FCU_SPEED_MANAGED = new DataRef("system.indicators.I_FCU_SPEED_MANAGED", 100, connection);
                 a320_data_glare.I_FCU_SPEED_MODE = new DataRef("system.indicators.I_FCU_SPEED_MODE", 100, connection);
                 a320_data_glare.I_FCU_TRACK_FPA_MODE = new DataRef("system.indicators.I_FCU_TRACK_FPA_MODE", 100, connection);
+                a320_data_glare.N_FCU_ALTITUDE = new DataRef("system.numerical.N_FCU_ALTITUDE", 100, connection);
                 a320_data_glare.N_FCU_HEADING = new DataRef("system.numerical.N_FCU_HEADING", 100, connection);
                 a320_data_glare.N_FCU_LIGHTING = new DataRef("system.numerical.N_FCU_LIGHTING", 100, connection);
                 a320_data_glare.N_FCU_LIGHTING_TEXT = new DataRef("system.numerical.N_FCU_LIGHTING_TEXT", 100, connection);
@@ -545,180 +571,190 @@ namespace Hardware2Prosim320
             {
                 if (sp.IsOpen)
                 {
-                    byte[] byteRead = new byte[sp.BytesToRead];
-                    sp.Read(byteRead, 0, byteRead.Length);
-
-                    //初始化接口转化
-                    HardwareCalculation h=new HardwareCalculation();
-
-
-                    //右侧杆 操作
-                    if (byteRead[0] == 0xA3 && byteRead.Length == 8)
+                    byte[] byteRead0 = new byte[sp.BytesToRead];
+                    sp.Read(byteRead0, 0, byteRead0.Length);
+                    sp.DiscardInBuffer();
+                    buffer.AddRange(byteRead0);
+                    while(buffer.Count>=8)
                     {
-                        h.H2P_StickR(byteRead, ref a320_data_yoke_R);
-                        return;
-                    }
+                        if(buffer[0]==0xA3||
+                            buffer[0] == 0xA4 ||
+                            buffer[0] == 0xA5 ||
+                            buffer[0] == 0xA6 ||
+                            buffer[0] == 0xA7 ||
+                            buffer[0] == 0xC0 ||
+                            buffer[0] == 0xC1 ||
+                            buffer[0] == 0xC2 ||
+                            buffer[0] == 0xC3 ||
+                            buffer[0] == 0xC4 ||
+                            buffer[0] == 0xD0 ||
+                            buffer[0] == 0xD1 ||
+                            buffer[0] == 0xD2 ||
+                            buffer[0] == 0xD3 ||
+                            buffer[0] == 0xD4 ||
+                            buffer[0] == 0xE0 ||
+                            buffer[0] == 0xE1 ||
+                            buffer[0] == 0xE2 ||
+                            buffer[0] == 0xE3 ||
+                            buffer[0] == 0xE4 ||
+                            buffer[0] == 0xE5 ||
+                            buffer[0] == 0xE6 ||
+                            buffer[0] == 0xF0 ||
+                            buffer[0] == 0xF1)
+                        {
+                            byte[] byteRead=new byte[8];
+                            buffer.CopyTo(0, byteRead, 0, 8);
+                            buffer.RemoveRange(0, 8);
 
-                    //左MCDU 按键1
-                    if (byteRead[0] == 0xA4 && byteRead.Length == 8)
-                    {
-                        h.H2P_MCDU_L_1(byteRead, ref a320_data_cdu_L);
-                        return;
-                    }
+                            //右侧杆 操作
+                            if (byteRead[0] == 0xA3 && byteRead.Length == 8)
+                            {
+                                h.H2P_StickR(byteRead, ref a320_data_yoke_R);
+                            }
 
-                    //左MCDU 按键2
-                    if (byteRead[0] == 0xA5 && byteRead.Length == 8)
-                    {
-                        h.H2P_MCDU_L_2(byteRead, ref a320_data_cdu_L);
-                        return;
-                    }
+                            //左MCDU 按键1
+                            if (byteRead[0] == 0xA4 && byteRead.Length == 8)
+                            {
+                                h.H2P_MCDU_L_1(byteRead, ref a320_data_cdu_L);
+                            }
 
-                    //左MCDU 按键2
-                    if (byteRead[0] == 0xA6 && byteRead.Length == 8)
-                    {
-                        h.H2P_MCDU_L_3(byteRead, ref a320_data_cdu_L);
-                        return;
-                    }
+                            //左MCDU 按键2
+                            if (byteRead[0] == 0xA5 && byteRead.Length == 8)
+                            {
+                                h.H2P_MCDU_L_2(byteRead, ref a320_data_cdu_L);
+                            }
 
-                    //左MCDU 指示灯1
-                    if (byteRead[0] == 0xA7 && byteRead.Length == 8)
-                    {
+                            //左MCDU 按键2
+                            if (byteRead[0] == 0xA6 && byteRead.Length == 8)
+                            {
+                                h.H2P_MCDU_L_3(byteRead, ref a320_data_cdu_L);
+                            }
 
-                        return;
-                    }                    
+                            //左MCDU 指示灯1
+                            if (byteRead[0] == 0xA7 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 EFIS左 按键
-                    if (byteRead[0] == 0xC0 && byteRead.Length == 8)
-                    {
-                        h.H2P_EFIS_L_1(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //遮光罩 EFIS左 指示灯
-                    if (byteRead[0] == 0xC1 && byteRead.Length == 8)
-                    {
+                            //遮光罩 EFIS左 按键
+                            if (byteRead[0] == 0xC0 && byteRead.Length == 8)
+                            {
+                                h.H2P_EFIS_L_1(byteRead, ref a320_data_glare);
+                            }
 
-                        return;
-                    }
+                            //遮光罩 EFIS左 指示灯
+                            if (byteRead[0] == 0xC1 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 EFIS左 波段开关
-                    if (byteRead[0] == 0xC2 && byteRead.Length == 8)
-                    {
-                        h.H2P_EFIS_L_2(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //遮光罩 EFIS左 数码管
-                    if (byteRead[0] == 0xC3 && byteRead.Length == 8)
-                    {
+                            //遮光罩 EFIS左 波段开关
+                            if (byteRead[0] == 0xC2 && byteRead.Length == 8)
+                            {
+                                h.H2P_EFIS_L_2(byteRead, ref a320_data_glare);
+                            }
 
-                        return;
-                    }
+                            //遮光罩 EFIS左 数码管
+                            if (byteRead[0] == 0xC3 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 EFIS左 编码器
-                    if (byteRead[0] == 0xC4 && byteRead.Length == 8)
-                    {
-                        h.H2P_EFIS_L_3(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //遮光罩 EFIS右 按键
-                    if (byteRead[0] == 0xD0 && byteRead.Length == 8)
-                    {
-                        h.H2P_EFIS_R_1(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            //遮光罩 EFIS左 编码器
+                            if (byteRead[0] == 0xC4 && byteRead.Length == 8)
+                            {
+                                h.H2P_EFIS_L_3(byteRead, ref a320_data_glare);
+                            }
 
-                    //遮光罩 EFIS右 指示灯
-                    if (byteRead[0] == 0xD1 && byteRead.Length == 8)
-                    {
+                            //遮光罩 EFIS右 按键
+                            if (byteRead[0] == 0xD0 && byteRead.Length == 8)
+                            {
+                                h.H2P_EFIS_R_1(byteRead, ref a320_data_glare);
+                            }
 
-                        return;
-                    }
+                            //遮光罩 EFIS右 指示灯
+                            if (byteRead[0] == 0xD1 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 EFIS右 波段开关
-                    if (byteRead[0] == 0xD2 && byteRead.Length == 8)
-                    {
-                        h.H2P_EFIS_R_2(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //遮光罩 EFIS右 数码管
-                    if (byteRead[0] == 0xD3 && byteRead.Length == 8)
-                    {
+                            //遮光罩 EFIS右 波段开关
+                            if (byteRead[0] == 0xD2 && byteRead.Length == 8)
+                            {
+                                h.H2P_EFIS_R_2(byteRead, ref a320_data_glare);
+                            }
 
-                        return;
-                    }
+                            //遮光罩 EFIS右 数码管
+                            if (byteRead[0] == 0xD3 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 EFIS右 编码器
-                    if (byteRead[0] == 0xD4 && byteRead.Length == 8)
-                    {
-                        h.H2P_EFIS_R_3(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //遮光罩 FCU   按键 
-                    if (byteRead[0] == 0xE0 && byteRead.Length == 8)
-                    {
-                        h.H2P_FCU_1(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            //遮光罩 EFIS右 编码器
+                            if (byteRead[0] == 0xD4 && byteRead.Length == 8)
+                            {
+                                h.H2P_EFIS_R_3(byteRead, ref a320_data_glare);
+                            }
 
-                    //遮光罩 FCU   指示灯 
-                    if (byteRead[0] == 0xE1 && byteRead.Length == 8)
-                    {
+                            //遮光罩 FCU   按键 
+                            if (byteRead[0] == 0xE0 && byteRead.Length == 8)
+                            {
+                                h.H2P_FCU_1(byteRead, ref a320_data_glare);
+                            }
 
-                        return;
-                    }
+                            //遮光罩 FCU   指示灯 
+                            if (byteRead[0] == 0xE1 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 FCU   波段开关 
-                    if (byteRead[0] == 0xE2 && byteRead.Length == 8)
-                    {
-                        h.H2P_FCU_2(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //遮光罩 FCU   数码管 1
-                    if (byteRead[0] == 0xE3 && byteRead.Length == 8)
-                    {
+                            //遮光罩 FCU   波段开关 
+                            if (byteRead[0] == 0xE2 && byteRead.Length == 8)
+                            {
+                                h.H2P_FCU_2(byteRead, ref a320_data_glare);
+                            }
 
-                        return;
-                    }
+                            //遮光罩 FCU   数码管 1
+                            if (byteRead[0] == 0xE3 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 FCU   数码管 2
-                    if (byteRead[0] == 0xE4 && byteRead.Length == 8)
-                    {
+                            }
 
-                        return;
-                    }
+                            //遮光罩 FCU   数码管 2
+                            if (byteRead[0] == 0xE4 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 FCU   数码管 3
-                    if (byteRead[0] == 0xE5 && byteRead.Length == 8)
-                    {
+                            }
 
-                        return;
-                    }
+                            //遮光罩 FCU   数码管 3
+                            if (byteRead[0] == 0xE5 && byteRead.Length == 8)
+                            {
 
-                    //遮光罩 FCU   编码器
-                    if (byteRead[0] == 0xE6 && byteRead.Length == 8)
-                    {
-                        h.H2P_FCU_3(byteRead, ref a320_data_glare);
-                        return;
-                    }
+                            }
 
-                    //油门台   油门操作
-                    if (byteRead[0] == 0xF0 && byteRead.Length == 8)
-                    {
-                        h.H2P_TQ1(byteRead, ref a320_data_tq);
-                        return;
-                    }
+                            //遮光罩 FCU   编码器
+                            if (byteRead[0] == 0xE6 && byteRead.Length == 8)
+                            {
+                                h.H2P_FCU_3(byteRead, ref a320_data_glare);
+                            }
 
-                    //油门台   配平轮操作
-                    if (byteRead[0] == 0xF1 && byteRead.Length == 8)
-                    {
+                            //油门台   油门操作
+                            if (byteRead[0] == 0xF0 && byteRead.Length == 8)
+                            {
+                                h.H2P_TQ1(byteRead, ref a320_data_tq);
+                            }
 
-                        return;
-                    }
+                            //油门台   配平轮操作
+                            if (byteRead[0] == 0xF1 && byteRead.Length == 8)
+                            {
+
+                            }
+                        }
+                        else
+                        {
+                            buffer.RemoveAt(0);
+                        }
+                    }  
                 }
             }
             catch (Exception ee)
@@ -728,7 +764,108 @@ namespace Hardware2Prosim320
 
             //throw new NotImplementedException();
         }
-        
+
+        /// <summary>
+        /// 开始线程
+        /// </summary>
+        private void StartThreads()
+        {
+            canStop = true;
+            if(sp_Glare!=null&&sp_Glare.IsOpen)
+            {
+                td_Glare.Start();
+            }
+            if(sp_CDUL!=null&&sp_CDUL.IsOpen)
+            {
+                td_CDUL.Start();
+            }
+            if (sp_CDUR != null && sp_CDUR.IsOpen)
+            {
+                td_CDUR.Start();
+            }
+            if (sp_TQ!=null&&sp_TQ.IsOpen)
+            {
+                td_TQ.Start();
+            }
+            if (sp_StickL!=null&&sp_StickL.IsOpen)
+            {
+                td_StickL.Start();
+            }
+            if (sp_StickR != null && sp_StickR.IsOpen)
+            {
+                td_StickR.Start();
+            }
+        }
+        private void StopThreads()
+        {
+            canStop = false;
+        }
+
+        private void td_GlareSend()
+        {
+            while(canStop)
+            {
+                byte[] byte2send;
+                byte2send=h.P2H_EFIS_L_1(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_EFIS_L_2(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+
+                byte2send = h.P2H_EFIS_R_1(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_EFIS_R_2(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+
+                byte2send = h.P2H_FCU_1(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_FCU_2(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_FCU_3(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_FCU_4(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                Thread.Sleep(interval);
+            }
+        }
+        private void td_TQSend()
+        {
+            while (canStop)
+            {
+                Thread.Sleep(interval);
+            }
+        }
+        private void td_StickLSend()
+        {
+            while (canStop)
+            {
+                Thread.Sleep(interval);
+            }
+        }
+        private void td_StickRSend()
+        {
+            while (canStop)
+            {
+                Thread.Sleep(interval);
+            }
+        }
+        private void td_CDULSend()
+        {
+            while (canStop)
+            {
+                byte[] byte2send;
+                byte2send = h.P2H_MCDU_L_1(ref a320_data_cdu_L);
+                sp_CDUL.Write(byte2send, 0, byte2send.Length);
+                Thread.Sleep(interval);
+            }
+        }
+        private void td_CDURSend()
+        {
+            while (canStop)
+            {
+                Thread.Sleep(interval);
+            }
+        }
+
         private void checkBox_Glare_CheckedChanged(object sender, EventArgs e)
         {
             textBox_Glare.Enabled = false;
