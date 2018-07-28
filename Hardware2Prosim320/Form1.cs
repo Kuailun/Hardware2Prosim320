@@ -582,6 +582,10 @@ namespace Hardware2Prosim320
                             buffer[0] == 0xA5 ||
                             buffer[0] == 0xA6 ||
                             buffer[0] == 0xA7 ||
+                            buffer[0] == 0xB2 ||
+                            buffer[0] == 0xB3 ||
+                            buffer[0] == 0xB4 ||
+                            buffer[0] == 0xB5 ||
                             buffer[0] == 0xC0 ||
                             buffer[0] == 0xC1 ||
                             buffer[0] == 0xC2 ||
@@ -609,25 +613,25 @@ namespace Hardware2Prosim320
                             //右侧杆 操作
                             if (byteRead[0] == 0xA3 && byteRead.Length == 8)
                             {
-                                h.H2P_StickR(byteRead, ref a320_data_yoke_R);
+                                h.H2P_Stick(byteRead, ref a320_data_yoke_R);
                             }
 
                             //左MCDU 按键1
                             if (byteRead[0] == 0xA4 && byteRead.Length == 8)
                             {
-                                h.H2P_MCDU_L_1(byteRead, ref a320_data_cdu_L);
+                                h.H2P_MCDU_1(byteRead, ref a320_data_cdu_L);
                             }
 
                             //左MCDU 按键2
                             if (byteRead[0] == 0xA5 && byteRead.Length == 8)
                             {
-                                h.H2P_MCDU_L_2(byteRead, ref a320_data_cdu_L);
+                                h.H2P_MCDU_2(byteRead, ref a320_data_cdu_L);
                             }
 
                             //左MCDU 按键2
                             if (byteRead[0] == 0xA6 && byteRead.Length == 8)
                             {
-                                h.H2P_MCDU_L_3(byteRead, ref a320_data_cdu_L);
+                                h.H2P_MCDU_3(byteRead, ref a320_data_cdu_L);
                             }
 
                             //左MCDU 指示灯1
@@ -636,6 +640,30 @@ namespace Hardware2Prosim320
 
                             }
 
+
+                            //右MCDU 按键1
+                            if (byteRead[0] == 0xB2 && byteRead.Length == 8)
+                            {
+                                h.H2P_MCDU_1(byteRead, ref a320_data_cdu_R);
+                            }
+
+                            //右MCDU 按键2
+                            if (byteRead[0] == 0xB3 && byteRead.Length == 8)
+                            {
+                                h.H2P_MCDU_2(byteRead, ref a320_data_cdu_R);
+                            }
+
+                            //右MCDU 按键2
+                            if (byteRead[0] == 0xB4 && byteRead.Length == 8)
+                            {
+                                h.H2P_MCDU_3(byteRead, ref a320_data_cdu_R);
+                            }
+
+                            //右MCDU 指示灯1
+                            if (byteRead[0] == 0xB5 && byteRead.Length == 8)
+                            {
+
+                            }
                             //遮光罩 EFIS左 按键
                             if (byteRead[0] == 0xC0 && byteRead.Length == 8)
                             {
@@ -853,7 +881,7 @@ namespace Hardware2Prosim320
             while (canStop)
             {
                 byte[] byte2send;
-                byte2send = h.P2H_MCDU_L_1(ref a320_data_cdu_L);
+                byte2send = h.P2H_MCDU_1(ref a320_data_cdu_L);
                 sp_CDUL.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
@@ -862,10 +890,12 @@ namespace Hardware2Prosim320
         {
             while (canStop)
             {
+                byte[] byte2send;
+                byte2send = h.P2H_MCDU_1(ref a320_data_cdu_R);
+                sp_CDUR.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
         }
-
         private void checkBox_Glare_CheckedChanged(object sender, EventArgs e)
         {
             textBox_Glare.Enabled = false;

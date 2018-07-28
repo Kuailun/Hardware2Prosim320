@@ -9,11 +9,11 @@ namespace Hardware2Prosim320
     class HardwareCalculation
     {
         /// <summary>
-        /// 右侧杆 操作
+        /// 侧杆 操作
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public void H2P_StickR(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data)
+        public void H2P_Stick(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data)
         {
             int UpDown=p_byteRead[1];
             int LeftRight=p_byteRead[2];
@@ -22,7 +22,7 @@ namespace Hardware2Prosim320
             LeftRight = Unsigned2Signed(LeftRight);
 
             UpDown = 512 - UpDown * 32;
-            LeftRight = 512 - LeftRight * 25;
+            LeftRight = 512 + LeftRight * 25;
 
             //计算完成后赋值给Prosim变量
             p_data.A_FC_PITCH.value = UpDown;
@@ -30,11 +30,11 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
-        /// 左MCDU 按键1
+        /// MCDU 按键1
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public void H2P_MCDU_L_1(byte[] p_byteRead, ref A320_Data_CDU p_data)
+        public void H2P_MCDU_1(byte[] p_byteRead, ref A320_Data_CDU p_data)
         {
             int[] state = new int[4];
 
@@ -89,11 +89,11 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
-        /// 左MCDU 按键2
+        /// MCDU 按键2
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public void H2P_MCDU_L_2(byte[] p_byteRead, ref A320_Data_CDU p_data)
+        public void H2P_MCDU_2(byte[] p_byteRead, ref A320_Data_CDU p_data)
         {
             int[] state = new int[4];
 
@@ -148,11 +148,11 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
-        /// 左MCDU 按键3
+        /// MCDU 按键3
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public void H2P_MCDU_L_3(byte[] p_byteRead, ref A320_Data_CDU p_data)
+        public void H2P_MCDU_3(byte[] p_byteRead, ref A320_Data_CDU p_data)
         {
             int[] state = new int[4];
 
@@ -186,10 +186,10 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
-        /// 左MCDU 指示灯
+        /// MCDU 指示灯
         /// </summary>
         /// <param name="p_data"></param>
-        public byte[] P2H_MCDU_L_1(ref A320_Data_CDU p_data)
+        public byte[] P2H_MCDU_1(ref A320_Data_CDU p_data)
         {
             byte[] p_byteSend = new byte[8];
 
