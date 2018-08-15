@@ -19,20 +19,25 @@ namespace Hardware2Prosim320
         ProSimConnect connection = new ProSimConnect();
         //初始化接口转化
         HardwareCalculation h = new HardwareCalculation();
+
         // 声明串口
         SerialPort sp_Glare = null;
         SerialPort sp_TQ = null;
         SerialPort sp_StickL = null;
         SerialPort sp_StickR = null;
-        SerialPort sp_CDUL = null;
+        //临时改为glare控制
+        //SerialPort sp_CDUL = null;
         SerialPort sp_CDUR = null;
+
         // 硬件连接标志
         bool bGlare;
         bool bTQ;
-        bool bCDUL;
+        //临时改为glare控制
+        //bool bCDUL;
         bool bCDUR;
         bool bStickL;
         bool bStickR;
+
         // 数据区
         A320_Data_Glare a320_data_glare;
         A320_Data_TQ a320_data_tq;
@@ -45,11 +50,12 @@ namespace Hardware2Prosim320
         private Thread td_TQ;
         private Thread td_StickL;
         private Thread td_StickR;
-        private Thread td_CDUL;
+        //临时改为glare控制
+        //private Thread td_CDUL;
         private Thread td_CDUR;
         private List<byte> buffer = new List<byte>(80);
         // 其他参数
-        int interval = 200;
+        int interval = 50;
         bool canStop = false;
 
 
@@ -74,7 +80,7 @@ namespace Hardware2Prosim320
             textBox_StickR.Enabled = false;
 
             td_Glare = new Thread(td_GlareSend);
-            td_CDUL = new Thread(td_CDULSend);
+            //td_CDUL = new Thread(td_CDULSend);
             td_CDUR = new Thread(td_CDURSend);
             td_StickL = new Thread(td_StickLSend);
             td_StickR = new Thread(td_StickRSend);
@@ -137,6 +143,7 @@ namespace Hardware2Prosim320
             if(bGlare)
             {
                 a320_data_glare = new A320_Data_Glare();
+                a320_data_cdu_L = new A320_Data_CDU();
                 OpenCom(ref sp_Glare, textBox_Glare.Text, 9600);
             }
             if(bTQ)
@@ -154,12 +161,13 @@ namespace Hardware2Prosim320
                 a320_data_yoke_R = new A320_Data_FC_YOKE();
                 OpenCom(ref sp_StickR, textBox_StickR.Text, 9600);
             }
-            if(bCDUL)
+            //临时改为glare控制
+            /*if(bCDUL)
             {
                 a320_data_cdu_L = new A320_Data_CDU();
                 OpenCom(ref sp_CDUL, textBox_CDUL.Text, 9600);
-            }
-            if(bCDUR)
+            }*/
+            if (bCDUR)
             {
                 a320_data_cdu_R = new A320_Data_CDU();
                 OpenCom(ref sp_CDUR, textBox_CDUR.Text, 9600);
@@ -199,13 +207,13 @@ namespace Hardware2Prosim320
                     sp_StickR.Close();
                 }
             }
-            if (sp_CDUL != null)
+            /*if (sp_CDUL != null)
             {
                 if (sp_CDUL.IsOpen)
                 {
                     sp_CDUL.Close();
                 }
-            }
+            }*/
             if (sp_CDUR != null)
             {
                 if (sp_CDUR.IsOpen)
@@ -222,7 +230,8 @@ namespace Hardware2Prosim320
         {
             bGlare = checkBox_Glare.Checked;
             bTQ = checkBox_TQ.Checked;
-            bCDUL = checkBox_CDUL.Checked;
+            //临时改为glare控制
+            //bCDUL = checkBox_CDUL.Checked;
             bCDUR = checkBox_CDUR.Checked;
             bStickL = checkBox_StickL.Checked;
             bStickR = checkBox_StickR.Checked;
@@ -803,10 +812,11 @@ namespace Hardware2Prosim320
             {
                 td_Glare.Start();
             }
-            if(sp_CDUL!=null&&sp_CDUL.IsOpen)
+            //临时改为glare控制
+            /*if(sp_CDUL!=null&&sp_CDUL.IsOpen)
             {
                 td_CDUL.Start();
-            }
+            }*/
             if (sp_CDUR != null && sp_CDUR.IsOpen)
             {
                 td_CDUR.Start();
@@ -852,6 +862,10 @@ namespace Hardware2Prosim320
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
                 byte2send = h.P2H_FCU_4(ref a320_data_glare);
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
+
+                //临时
+                byte2send = h.P2H_MCDU_1(ref a320_data_cdu_L);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
         }
@@ -882,7 +896,7 @@ namespace Hardware2Prosim320
             {
                 byte[] byte2send;
                 byte2send = h.P2H_MCDU_1(ref a320_data_cdu_L);
-                sp_CDUL.Write(byte2send, 0, byte2send.Length);
+                //sp_CDUL.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
         }

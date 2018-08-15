@@ -76,7 +76,7 @@
             this.textBox_Glare.Name = "textBox_Glare";
             this.textBox_Glare.Size = new System.Drawing.Size(100, 21);
             this.textBox_Glare.TabIndex = 2;
-            this.textBox_Glare.Text = "COM3";
+            this.textBox_Glare.Text = "COM5";
             // 
             // textBox_TQ
             // 
@@ -168,7 +168,7 @@
             this.textBox_StickR.Name = "textBox_StickR";
             this.textBox_StickR.Size = new System.Drawing.Size(100, 21);
             this.textBox_StickR.TabIndex = 17;
-            this.textBox_StickR.Text = "COM8";
+            this.textBox_StickR.Text = "COM5";
             // 
             // label5
             // 
