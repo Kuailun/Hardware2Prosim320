@@ -624,7 +624,7 @@ namespace Hardware2Prosim320
             }
 
             //KB2
-            state = SplitData(p_byteRead[1]);
+            state = SplitData(p_byteRead[2]);
             if (1 - state[3] == 1)//触发了
             {
                 p_data.S_FCU_HEADING.value = 1;
@@ -659,7 +659,7 @@ namespace Hardware2Prosim320
             }
 
             //KB3
-            state = SplitData(p_byteRead[1]);
+            state = SplitData(p_byteRead[3]);
             if (1 - state[3] == 1)//触发了
             {
                 p_data.S_FCU_VERTICAL_SPEED.value = 1;
@@ -680,12 +680,14 @@ namespace Hardware2Prosim320
             p_data.S_FCU_AP2.value = 1 - state[0];
 
             //KB4
+            state = SplitData(p_byteRead[4]);
             p_data.S_FCU_LOC.value = 1 - state[3];
             p_data.S_FCU_ATHR.value = 1 - state[2];
             p_data.S_FCU_EXPED.value = 1 - state[1];
             p_data.S_FCU_APPR.value = 1 - state[0];
 
             //KB5
+            state = SplitData(p_byteRead[5]);
             p_data.S_FCU_METRIC_ALT.value = 1 - state[3];
         }
 
