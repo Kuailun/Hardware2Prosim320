@@ -647,6 +647,8 @@ namespace Hardware2Prosim320
 
             //KB3
             state = SplitData(p_byteRead[3]);
+            p_data.S_FCU_AP1.value = 1 - state[1];
+            p_data.S_FCU_AP2.value = 1 - state[0];
             if (1 - state[3] == 1)//触发了
             {
                 p_data.S_FCU_VERTICAL_SPEED.value = 1;
@@ -659,8 +661,7 @@ namespace Hardware2Prosim320
             {
                 p_data.S_FCU_VERTICAL_SPEED.value = 0;
             }
-            p_data.S_FCU_AP1.value = 1 - state[1];
-            p_data.S_FCU_AP2.value = 1 - state[0];
+            
 
             //KB4
             state = SplitData(p_byteRead[4]);
@@ -943,14 +944,22 @@ namespace Hardware2Prosim320
             {
                 eng_l = (eng_l + 20) * 52;
             }
-            else if (eng_l >= 0 && eng_l <= 24)
+            else if (eng_l >= 0 && eng_l <= 25) //原算法可能有问题
             {
-                eng_l = 2001 + eng_l * 41;
+                eng_l = 2001 + eng_l * 36;
             }
-            else if (eng_l >= 25 && eng_l <= 34)
+            else if (eng_l >= 26 && eng_l <= 34)
             {
                 eng_l = 3001 + (eng_l - 25) * 99;
             }
+            /*  else if (eng_l >= 0 && eng_l <= 24)
+              {   
+                  eng_l = 2001 + eng_l * 41;
+              }
+              else if (eng_l >= 25 && eng_l <= 34)
+              {
+                  eng_l = 3001 + (eng_l - 25) * 99;
+              }*/
             else if (eng_l >= 35 && eng_l <= 44)
             {
                 eng_l = 4001 + (eng_l - 35) * 99;
@@ -966,14 +975,22 @@ namespace Hardware2Prosim320
             {
                 eng_r = (eng_r + 20) * 52;
             }
-            else if (eng_r >= 0 && eng_r <= 24)
+            else if (eng_r >= 0 && eng_r <= 25) //原算法可能有问题
+            {
+                eng_r = 2001 + eng_r * 36;
+            }
+            else if (eng_r >= 26 && eng_r <= 34)
+            {
+                eng_r = 3001 + (eng_r - 25) * 99;
+            }
+            /*  else if (eng_r >= 0 && eng_r <= 24)
             {
                 eng_r = 2001 + eng_r * 41;
             }
             else if (eng_r >= 25 && eng_r <= 34)
             {
                 eng_r = 3001 + (eng_r - 25) * 99;
-            }
+            }*/
             else if (eng_r >= 35 && eng_r <= 44)
             {
                 eng_r = 4001 + (eng_r - 35) * 99;

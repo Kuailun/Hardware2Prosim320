@@ -277,7 +277,7 @@ namespace Hardware2Prosim320
                 a320_data_glare.S_FCU_ALTITUDE = new DataRef("system.switches.S_FCU_ALTITUDE", 100, connection);
                 a320_data_glare.S_FCU_ALTITUDE_SCALE = new DataRef("system.switches.S_FCU_ALTITUDE_SCALE", 100, connection);
                 a320_data_glare.S_FCU_AP1 = new DataRef("system.switches.S_FCU_AP1", 100, connection);
-                a320_data_glare.S_FCU_AP2 = new DataRef("system.switches.S_FCU_AP1", 100, connection);
+                a320_data_glare.S_FCU_AP2 = new DataRef("system.switches.S_FCU_AP2", 100, connection);
                 a320_data_glare.S_FCU_APPR = new DataRef("system.switches.S_FCU_APPR", 100, connection);
                 a320_data_glare.S_FCU_ATHR = new DataRef("system.switches.S_FCU_ATHR", 100, connection);
                 a320_data_glare.S_FCU_EXPED = new DataRef("system.switches.S_FCU_EXPED", 100, connection);
