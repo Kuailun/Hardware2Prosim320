@@ -620,7 +620,7 @@ namespace Hardware2Prosim320
 
             //KB2
             state = SplitData(p_byteRead[2]);
-            if (1 - state[3] == 1)//触发了
+            if (1 - state[3] == 1)//触发判断
             {
                 p_data.S_FCU_HEADING.value = 1;
             }
