@@ -605,23 +605,18 @@ namespace Hardware2Prosim320
             state = SplitData(p_byteRead[1]);
             p_data.S_FCU_SPD_MACH.value = 1 - state[3];
             p_data.S_FCU_HDGVS_TRKFPA.value = 1 - state[2];
-
             if (1 - state[1] == 1)//触发了
-            {
-                p_data.S_FCU_SPEED.value = 1;
-            }
-            else
-            {
-                p_data.S_FCU_SPEED.value = 0;
-            }
-            if (1 - state[0] == 1)//触发了
-            {
-                p_data.S_FCU_SPEED.value = 2;
-            }
-            else
-            {
-                p_data.S_FCU_SPEED.value = 0;
-            }
+             {
+                 p_data.S_FCU_SPEED.value = 1;
+             }
+             else if (1 - state[0] == 1)//触发了
+             {
+                 p_data.S_FCU_SPEED.value = 2;
+             }
+             else
+             {
+                 p_data.S_FCU_SPEED.value = 0;
+             }
 
             //KB2
             state = SplitData(p_byteRead[2]);
@@ -629,11 +624,7 @@ namespace Hardware2Prosim320
             {
                 p_data.S_FCU_HEADING.value = 1;
             }
-            else
-            {
-                p_data.S_FCU_HEADING.value = 0;
-            }
-            if (1 - state[2] == 1)//触发了
+            else if (1 - state[2] == 1)//触发了
             {
                 p_data.S_FCU_HEADING.value = 2;
             }
@@ -645,11 +636,7 @@ namespace Hardware2Prosim320
             {
                 p_data.S_FCU_ALTITUDE.value = 1;
             }
-            else
-            {
-                p_data.S_FCU_ALTITUDE.value = 0;
-            }
-            if (1 - state[0] == 1)//触发了
+            else if (1 - state[0] == 1)//触发了
             {
                 p_data.S_FCU_ALTITUDE.value = 2;
             }
@@ -664,11 +651,7 @@ namespace Hardware2Prosim320
             {
                 p_data.S_FCU_VERTICAL_SPEED.value = 1;
             }
-            else
-            {
-                p_data.S_FCU_VERTICAL_SPEED.value = 0;
-            }
-            if (1 - state[2] == 1)//触发了
+             else if (1 - state[2] == 1)//触发了
             {
                 p_data.S_FCU_VERTICAL_SPEED.value = 2;
             }
