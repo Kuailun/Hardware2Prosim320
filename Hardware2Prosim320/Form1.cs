@@ -312,6 +312,7 @@ namespace Hardware2Prosim320
                 a320_data_glare.I_FCU_SPEED_MANAGED = new DataRef("system.indicators.I_FCU_SPEED_MANAGED", 100, connection);
                 a320_data_glare.I_FCU_SPEED_MODE = new DataRef("system.indicators.I_FCU_SPEED_MODE", 100, connection);
                 a320_data_glare.I_FCU_TRACK_FPA_MODE = new DataRef("system.indicators.I_FCU_TRACK_FPA_MODE", 100, connection);
+                a320_data_glare.I_FCU_ALTITUDE_MANAGED = new DataRef("system.indicators.I_FCU_ALTITUDE_MANAGED", 100, connection);
                 a320_data_glare.N_FCU_ALTITUDE = new DataRef("system.numerical.N_FCU_ALTITUDE", 100, connection);
                 a320_data_glare.N_FCU_HEADING = new DataRef("system.numerical.N_FCU_HEADING", 100, connection);
                 a320_data_glare.N_FCU_LIGHTING = new DataRef("system.numerical.N_FCU_LIGHTING", 100, connection);
@@ -571,6 +572,7 @@ namespace Hardware2Prosim320
                 a320_data_yoke_R.A_FC_PITCH = new DataRef("system.analog.A_FC_FO_PITCH", 100, connection);
                 a320_data_yoke_R.A_FC_ROLL = new DataRef("system.analog.A_FC_FO_ROLL", 100, connection);
                 a320_data_yoke_R.A_FC_TILLER = new DataRef("system.analog.A_FC_FO_TILLER", 100, connection);
+                a320_data_yoke_R.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_CAPT_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
             }
         }
         public void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -622,9 +624,9 @@ namespace Hardware2Prosim320
                             //右侧杆 操作
                             if (byteRead[0] == 0xA3 && byteRead.Length == 8)
                             {
-                                h.H2P_Stick(byteRead, ref a320_data_yoke_R);
+                                h.H2P_Stick_1(byteRead, ref a320_data_yoke_R);
                             }
-
+                            
                             //左MCDU 按键1
                             if (byteRead[0] == 0xA4 && byteRead.Length == 8)
                             {

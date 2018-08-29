@@ -13,11 +13,11 @@ namespace Hardware2Prosim320
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public void H2P_Stick(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data)
+        public void H2P_Stick_1(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data) //新增侧杆变量 2018.8.27
         {
             int UpDown=p_byteRead[1];
             int LeftRight=p_byteRead[2];
-
+            int[] state = new int[4];
             UpDown = Unsigned2Signed(UpDown);
             LeftRight = Unsigned2Signed(LeftRight);
 
@@ -27,8 +27,25 @@ namespace Hardware2Prosim320
             //计算完成后赋值给Prosim变量
             p_data.A_FC_PITCH.value = UpDown;
             p_data.A_FC_ROLL.value = LeftRight;
+            //按键
+           
+            //KB1
+            state = SplitData(p_byteRead[3]);
+            p_data.S_FC_DISCONNECT.value = 1 - state[0];
         }
+        /// <summary>
+        /// 侧杆按键
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_Stick_2(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data) 
+        {
+            int[] state = new int[4];
 
+            //KB1
+            state = SplitData(p_byteRead[1]);
+            p_data.S_FC_DISCONNECT.value = 1 - state[0];
+        }
         /// <summary>
         /// MCDU 按键1
         /// </summary>
@@ -749,7 +766,7 @@ namespace Hardware2Prosim320
             {
                 p_byteSend[1] += 2;
             }
-            if ((byte)(p_data.I_FCU_MACH_MODE.value) == 0)
+            if ((byte)(p_data.I_FCU_SPEED_MODE.value) == 2)//更改
             {
                 p_byteSend[1] += 1;
             }
@@ -800,6 +817,20 @@ namespace Hardware2Prosim320
             if ((byte)(p_data.I_FCU_HEADING_MANAGED.value) == 2)
             {
                 p_byteSend[3] += 64;
+            }
+            //增加LVL/CH管理窗，LAT灯，ALT灯，-LVL/CH灯
+            if((byte)(p_data.I_FCU_ALTITUDE_MANAGED.value) == 2)
+            {
+                p_byteSend[3] += 32;
+                p_byteSend[3] += 16;    //LAT,ALT,-LVL/CH为常亮，增加到其他变量中
+                p_byteSend[3] += 8;
+                p_byteSend[3] += 4;
+            }
+            if ((byte)(p_data.I_FCU_ALTITUDE_MANAGED.value) == 0)
+            {
+                p_byteSend[3] += 16;    //LAT,ALT,-LVL/CH为常亮，增加到其他变量中
+                p_byteSend[3] += 8;
+                p_byteSend[3] += 4;
             }
             double num = (double)p_data.N_FCU_VS.value;
             if(num>=0)
