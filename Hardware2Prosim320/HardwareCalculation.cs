@@ -833,7 +833,11 @@ namespace Hardware2Prosim320
                 p_byteSend[3] += 4;
             }
             double num = (double)p_data.N_FCU_VS.value;
-            if(num>=0)
+            if ((bool)(p_data.B_FCU_VERTICALSPEED_DASHED.value) == true)
+            {
+                p_byteSend[3] += 2;
+            }
+            else if (num>=0)
             {
                 p_byteSend[3] += 2;
                 p_byteSend[3] += 1;
@@ -857,7 +861,38 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
-        /// 遮光罩 FCU   数码管1
+        /// 遮光罩 FCU   数码管1_speed
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        /*   public byte[] P2H_FCU_2(ref A320_Data_Glare p_data)
+           {
+               byte[] p_byteSend = new byte[8];
+
+               p_byteSend[0] = 0xE3;
+
+                   double num = (double)p_data.N_FCU_SPEED.value;
+                   int num_bai = (int)(num / 100);
+                   int num_shi = (int)((num - 100 * num_bai) / 10);
+                   int num_ge = (int)(num % 10);
+
+                   p_byteSend[1] = (byte)num_bai;
+                   p_byteSend[2] = (byte)num_shi;
+                   p_byteSend[3] = (byte)num_ge;
+                   num = (double)p_data.N_FCU_HEADING.value;
+                   num_bai = (int)(num / 100);
+                   num_shi = (int)((num - 100 * num_bai) / 10);
+                   num_ge = (int)(num % 10);
+
+                   p_byteSend[4] = (byte)num_bai;
+                   p_byteSend[5] = (byte)num_shi;
+                   p_byteSend[6] = (byte)num_ge;
+
+
+               return p_byteSend;
+           }*/
+        /// <summary>
+        /// 遮光罩 FCU   数码管1 增加数码管变横线
         /// </summary>
         /// <param name="p_data"></param>
         /// <returns></returns>
@@ -866,23 +901,41 @@ namespace Hardware2Prosim320
             byte[] p_byteSend = new byte[8];
 
             p_byteSend[0] = 0xE3;
-            double num = (double)p_data.N_FCU_SPEED.value;
-            int num_bai = (int)(num/ 100);
-            int num_shi = (int)((num- 100 * num_bai) / 10);
-            int num_ge = (int)(num % 10);
+            if ((bool)(p_data.B_FCU_SPEED_DASHED.value) == true)
+            {
+                p_byteSend[1] = 0x11;
+                p_byteSend[2] = 0x11;
+                p_byteSend[3] = 0x11;
+            }
+            else
+            {
+                double num = (double)p_data.N_FCU_SPEED.value;
+                int num_bai = (int)(num / 100);
+                int num_shi = (int)((num - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
 
-            p_byteSend[1] = (byte)num_bai;
-            p_byteSend[2] = (byte)num_shi;
-            p_byteSend[3] = (byte)num_ge;
+                p_byteSend[1] = (byte)num_bai;
+                p_byteSend[2] = (byte)num_shi;
+                p_byteSend[3] = (byte)num_ge;
+            }
+            if ((bool)(p_data.B_FCU_HEADING_DASHED.value) == true)
+            {
+                p_byteSend[4] = 0x11;
+                p_byteSend[5] = 0x11;
+                p_byteSend[6] = 0x11;
+            }
+            else
+            {
+                double num = (double)p_data.N_FCU_HEADING.value;
+                int num_bai = (int)(num / 100);
+                int num_shi = (int)((num - 100 * num_bai) / 10);
+                int num_ge = (int)(num % 10);
 
-            num = (double)p_data.N_FCU_HEADING.value;
-            num_bai = (int)(num / 100);
-            num_shi = (int)((num - 100 * num_bai) / 10);
-            num_ge = (int)(num % 10);
+                p_byteSend[4] = (byte)num_bai;
+                p_byteSend[5] = (byte)num_shi;
+                p_byteSend[6] = (byte)num_ge;
+            }
 
-            p_byteSend[4] = (byte)num_bai;
-            p_byteSend[5] = (byte)num_shi;
-            p_byteSend[6] = (byte)num_ge;
 
             return p_byteSend;
         }
@@ -896,8 +949,14 @@ namespace Hardware2Prosim320
         {
             byte[] p_byteSend = new byte[8];
             p_byteSend[0] = 0xE4;
-
-            if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 0)
+            if ((bool)(p_data.B_FCU_VERTICALSPEED_DASHED.value) == true)
+            {
+                p_byteSend[1] = 0x11;
+                p_byteSend[2] = 0x11;
+                p_byteSend[3] = 0x11;
+                p_byteSend[4] = 0x11;
+            }
+            else if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 0)
             {
                 double num = (double)p_data.N_FCU_VS.value;
                 if(num<0)
@@ -914,7 +973,7 @@ namespace Hardware2Prosim320
                 p_byteSend[3] = 20;
                 p_byteSend[4] = 20;   
             }
-            else if((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 2)
+            else if ((byte)(p_data.I_FCU_TRACK_FPA_MODE.value) == 2)
             {
                 double num = (double)p_data.N_FCU_VS.value;
                 if (num < 0)

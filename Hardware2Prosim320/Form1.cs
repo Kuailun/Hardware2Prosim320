@@ -383,6 +383,24 @@ namespace Hardware2Prosim320
                 a320_data_glare.N_FCU_EFIS2_BARO_HPA = new DataRef("system.numerical.N_FCU_EFIS2_BARO_HPA", 100, connection);
                 a320_data_glare.N_FCU_EFIS2_BARO_INCH = new DataRef("system.numerical.N_FCU_EFIS2_BARO_INCH", 100, connection);
                 a320_data_glare.E_FCU_EFIS2_BARO = new DataRef("system.encoders.E_FCU_EFIS2_BARO", 100, connection);
+
+                //WARN1
+                a320_data_glare.I_CTN_WARN1_ARROW = new DataRef("system.indicators.I_FC_SIDESTICK_PRIORITY_CAPT_ARROW", 100, connection);
+                a320_data_glare.I_CTN_WARN1_CAPT = new DataRef("system.indicators.I_FC_SIDESTICK_PRIORITY_CAPT", 100, connection);
+                a320_data_glare.I_CTN_WARN1_CAUTION = new DataRef("system.indicators.I_MIP_MASTER_CAUTION_CAPT", 100, connection);
+                a320_data_glare.I_CTN_WARN1_CAUTION_L = new DataRef("system.indicators.I_MIP_MASTER_CAUTION_CAPT_L", 100, connection);
+                a320_data_glare.I_CTN_WARN1_WARNING = new DataRef("system.indicators.I_MIP_MASTER_WARNING_CAPT", 100, connection);
+                a320_data_glare.I_CTN_WARN1_WARNING_L = new DataRef("system.indicators.I_MIP_MASTER_WARNING_CAPT_L", 100, connection);
+                a320_data_glare.I_CTN_WARN1_AUTOLAND = new DataRef("system.indicators.I_MIP_AUTOLAND_CAPT", 100, connection);
+
+                //WARN2
+                a320_data_glare.I_CTN_WARN2_ARROW = new DataRef("system.indicators.I_FC_SIDESTICK_PRIORITY_FO_ARROW", 100, connection);
+                a320_data_glare.I_CTN_WARN2_CAPT = new DataRef("system.indicators.I_FC_SIDESTICK_PRIORITY_FO", 100, connection);
+                a320_data_glare.I_CTN_WARN2_CAUTION = new DataRef("system.indicators.I_MIP_MASTER_CAUTION_FO", 100, connection);
+                a320_data_glare.I_CTN_WARN2_CAUTION_L = new DataRef("system.indicators.I_MIP_MASTER_CAUTION_FO_L", 100, connection);
+                a320_data_glare.I_CTN_WARN2_WARNING = new DataRef("system.indicators.I_MIP_MASTER_WARNING_FO", 100, connection);
+                a320_data_glare.I_CTN_WARN2_WARNING_L = new DataRef("system.indicators.I_MIP_MASTER_WARNING_FO_L", 100, connection);
+                a320_data_glare.I_CTN_WARN2_AUTOLAND = new DataRef("system.indicators.I_MIP_AUTOLAND_FO", 100, connection);
             }
             
 

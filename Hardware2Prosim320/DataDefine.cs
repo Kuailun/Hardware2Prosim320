@@ -120,6 +120,25 @@ namespace Hardware2Prosim320
         public DataRef N_FCU_EFIS2_BARO_HPA;
         public DataRef N_FCU_EFIS2_BARO_INCH;
         public DataRef E_FCU_EFIS2_BARO;
+
+        //WARN1 IN
+        public DataRef I_CTN_WARN1_ARROW;
+        public DataRef I_CTN_WARN1_CAPT;
+        public DataRef I_CTN_WARN1_CAUTION;
+        public DataRef I_CTN_WARN1_CAUTION_L;
+        public DataRef I_CTN_WARN1_WARNING;
+        public DataRef I_CTN_WARN1_WARNING_L;
+        public DataRef I_CTN_WARN1_AUTOLAND;
+
+        //WARN2 IN
+        public DataRef I_CTN_WARN2_ARROW;
+        public DataRef I_CTN_WARN2_CAPT;
+        public DataRef I_CTN_WARN2_CAUTION;
+        public DataRef I_CTN_WARN2_CAUTION_L;
+        public DataRef I_CTN_WARN2_WARNING;
+        public DataRef I_CTN_WARN2_WARNING_L;
+        public DataRef I_CTN_WARN2_AUTOLAND;
+
     }
     class A320_Data_TQ
     {
