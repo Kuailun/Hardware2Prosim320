@@ -392,6 +392,9 @@ namespace Hardware2Prosim320
                 a320_data_glare.I_CTN_WARN1_WARNING = new DataRef("system.indicators.I_MIP_MASTER_WARNING_CAPT", 100, connection);
                 a320_data_glare.I_CTN_WARN1_WARNING_L = new DataRef("system.indicators.I_MIP_MASTER_WARNING_CAPT_L", 100, connection);
                 a320_data_glare.I_CTN_WARN1_AUTOLAND = new DataRef("system.indicators.I_MIP_AUTOLAND_CAPT", 100, connection);
+                a320_data_glare.S_CTN_WARN1_CHRONO = new DataRef("system.switches.S_MIP_CHRONO_CAPT", 100, connection);
+                a320_data_glare.S_CTN_WARN1_MASTER_CAUTION = new DataRef("system.switches.S_MIP_MASTER_CAUTION_CAPT", 100, connection);
+                a320_data_glare.S_CTN_WARN1_MASTER_WARNING = new DataRef("system.switches.S_MIP_MASTER_WARNING_CAPT", 100, connection);
 
                 //WARN2
                 a320_data_glare.I_CTN_WARN2_ARROW = new DataRef("system.indicators.I_FC_SIDESTICK_PRIORITY_FO_ARROW", 100, connection);
@@ -401,6 +404,9 @@ namespace Hardware2Prosim320
                 a320_data_glare.I_CTN_WARN2_WARNING = new DataRef("system.indicators.I_MIP_MASTER_WARNING_FO", 100, connection);
                 a320_data_glare.I_CTN_WARN2_WARNING_L = new DataRef("system.indicators.I_MIP_MASTER_WARNING_FO_L", 100, connection);
                 a320_data_glare.I_CTN_WARN2_AUTOLAND = new DataRef("system.indicators.I_MIP_AUTOLAND_FO", 100, connection);
+                a320_data_glare.S_CTN_WARN2_CHRONO = new DataRef("system.switches.S_MIP_CHRONO_FO", 100, connection);
+                a320_data_glare.S_CTN_WARN2_MASTER_CAUTION = new DataRef("system.switches.S_MIP_MASTER_CAUTION_FO", 100, connection);
+                a320_data_glare.S_CTN_WARN2_MASTER_WARNING = new DataRef("system.switches.S_MIP_MASTER_WARNING_FO", 100, connection);
             }
             
 
@@ -606,11 +612,16 @@ namespace Hardware2Prosim320
                     buffer.AddRange(byteRead0);
                     while(buffer.Count>=8)
                     {
-                        if(buffer[0]==0xA3||
+                        if(
+                            buffer[0] == 0xA0 ||
+                            buffer[0] == 0xA1 ||
+                            buffer[0] == 0xA3 ||
                             buffer[0] == 0xA4 ||
                             buffer[0] == 0xA5 ||
                             buffer[0] == 0xA6 ||
                             buffer[0] == 0xA7 ||
+                            buffer[0] == 0xB0 ||
+                            buffer[0] == 0xB1 ||
                             buffer[0] == 0xB2 ||
                             buffer[0] == 0xB3 ||
                             buffer[0] == 0xB4 ||
@@ -638,6 +649,30 @@ namespace Hardware2Prosim320
                             byte[] byteRead=new byte[8];
                             buffer.CopyTo(0, byteRead, 0, 8);
                             buffer.RemoveRange(0, 8);
+
+                            //左注意警告 按键
+                            if (byteRead[0] == 0xA0 && byteRead.Length == 8)
+                            {
+                                h.H2P_WARN_L(byteRead, ref a320_data_glare);
+                            }
+
+                            //左注意警告 指示灯
+                            if (byteRead[0] == 0xA1 && byteRead.Length == 8)
+                            {
+
+                            }
+
+                            //右注意警告 按键
+                            if (byteRead[0] == 0xB0 && byteRead.Length == 8)
+                            {
+                                h.H2P_WARN_R(byteRead, ref a320_data_glare);
+                            }
+
+                            //右注意警告 指示灯
+                            if (byteRead[0] == 0xB1 && byteRead.Length == 8)
+                            {
+
+                            }
 
                             //右侧杆 操作
                             if (byteRead[0] == 0xA3 && byteRead.Length == 8)
@@ -882,7 +917,10 @@ namespace Hardware2Prosim320
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
                 byte2send = h.P2H_FCU_4(ref a320_data_glare);
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
-
+                byte2send = h.P2H_WARN_L(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_WARN_R(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
                 //临时
                 byte2send = h.P2H_MCDU_1(ref a320_data_cdu_L);
                 sp_Glare.Write(byte2send, 0, byte2send.Length);

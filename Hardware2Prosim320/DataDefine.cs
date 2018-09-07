@@ -129,6 +129,9 @@ namespace Hardware2Prosim320
         public DataRef I_CTN_WARN1_WARNING;
         public DataRef I_CTN_WARN1_WARNING_L;
         public DataRef I_CTN_WARN1_AUTOLAND;
+        public DataRef S_CTN_WARN1_CHRONO;
+        public DataRef S_CTN_WARN1_MASTER_CAUTION;
+        public DataRef S_CTN_WARN1_MASTER_WARNING;
 
         //WARN2 IN
         public DataRef I_CTN_WARN2_ARROW;
@@ -138,6 +141,9 @@ namespace Hardware2Prosim320
         public DataRef I_CTN_WARN2_WARNING;
         public DataRef I_CTN_WARN2_WARNING_L;
         public DataRef I_CTN_WARN2_AUTOLAND;
+        public DataRef S_CTN_WARN2_CHRONO;
+        public DataRef S_CTN_WARN2_MASTER_CAUTION;
+        public DataRef S_CTN_WARN2_MASTER_WARNING;
 
     }
     class A320_Data_TQ

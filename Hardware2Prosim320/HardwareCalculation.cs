@@ -33,7 +33,7 @@ namespace Hardware2Prosim320
             state = SplitData(p_byteRead[3]);
             p_data.S_FC_DISCONNECT.value = 1 - state[0];
         }
-        /// <summary>
+      /*  /// <summary>
         /// 侧杆按键
         /// </summary>
         /// <param name="p_byteRead"></param>
@@ -45,7 +45,7 @@ namespace Hardware2Prosim320
             //KB1
             state = SplitData(p_byteRead[1]);
             p_data.S_FC_DISCONNECT.value = 1 - state[0];
-        }
+        }*/
         /// <summary>
         /// MCDU 按键1
         /// </summary>
@@ -1016,6 +1016,107 @@ namespace Hardware2Prosim320
 
             return p_byteSend;
         }
+        /// <summary>
+        /// 注意警告 左 按键
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_WARN_L(byte[] p_byteRead, ref A320_Data_Glare p_data)
+        {
+            int[] state = new int[4];
+
+            //KB1
+            state = SplitData(p_byteRead[1]);
+            p_data.S_CTN_WARN1_CHRONO.value = 1 - state[3];
+            p_data.S_CTN_WARN1_MASTER_WARNING.value = 1 - state[2];
+            p_data.S_CTN_WARN1_MASTER_CAUTION.value = 1 - state[1];
+                                                                       //尚未找到AUTO LAND变量
+        }
+
+        /// <summary>
+        /// 注意警告 左 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_WARN_L(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xA1;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_CTN_WARN1_ARROW.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_CTN_WARN1_CAPT.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_CTN_WARN1_WARNING.value) == 3)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_CTN_WARN1_CAUTION.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_CTN_WARN1_AUTOLAND.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            return p_byteSend;
+        }
+
+        /// <summary>
+        /// 注意警告 右 按键
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_WARN_R(byte[] p_byteRead, ref A320_Data_Glare p_data)
+        {
+            int[] state = new int[4];
+
+            //KB1
+            state = SplitData(p_byteRead[1]);
+            p_data.S_CTN_WARN2_CHRONO.value = 1 - state[3];
+            p_data.S_CTN_WARN2_MASTER_WARNING.value = 1 - state[2];
+            p_data.S_CTN_WARN2_MASTER_CAUTION.value = 1 - state[1];
+            //尚未找到AUTO LAND变量
+        }
+
+        /// <summary>
+        /// 注意警告 右 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_WARN_R(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xB1;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_CTN_WARN2_ARROW.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_CTN_WARN2_CAPT.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_CTN_WARN2_WARNING.value) == 3)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_CTN_WARN2_CAUTION.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_CTN_WARN2_AUTOLAND.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            return p_byteSend;
+        }
 
         /// <summary>
         /// 油门台   油门操作
@@ -1034,9 +1135,9 @@ namespace Hardware2Prosim320
             {
                 eng_l = (eng_l + 20) * 52;
             }
-            else if (eng_l >= 0 && eng_l <= 25) //原算法可能有问题
+            else if (eng_l >= 0 && eng_l <= 25) //原算法可能有问题 2018.9.4
             {
-                eng_l = 2001 + eng_l * 36;
+                eng_l = 2000 + eng_l * 40;
             }
             else if (eng_l >= 26 && eng_l <= 34)
             {
@@ -1067,7 +1168,7 @@ namespace Hardware2Prosim320
             }
             else if (eng_r >= 0 && eng_r <= 25) //原算法可能有问题
             {
-                eng_r = 2001 + eng_r * 36;
+                eng_r = 2000 + eng_r * 40;
             }
             else if (eng_r >= 26 && eng_r <= 34)
             {
