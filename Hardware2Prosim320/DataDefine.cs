@@ -150,6 +150,7 @@ namespace Hardware2Prosim320
     {
         public DataRef A_FC_THROTTLE_LEFT_INPUT;
         public DataRef A_FC_THROTTLE_RIGHT_INPUT;
+        public DataRef A_FC_ELEVATOR_TRIM;
     }
     class A320_Data_CDU
     {

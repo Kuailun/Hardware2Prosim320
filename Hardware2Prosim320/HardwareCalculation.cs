@@ -1196,6 +1196,36 @@ namespace Hardware2Prosim320
             p_data.A_FC_THROTTLE_RIGHT_INPUT.value = eng_r;   
         }
 
+
+        /// <summary>
+        /// 油门台   配平轮操作
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_TQ2(byte[] p_byteRead, ref A320_Data_TQ p_data)
+        {
+            
+            int eng_e1 = p_byteRead[1];
+            int eng_e2 = p_byteRead[2];
+            double f_t = 5.7;
+            double f_r = 5.625;
+            int[] state = new int[4];
+          /*  eng_e1 = Unsigned2Signed(eng_e1);
+            eng_e2 = Unsigned2Signed(eng_e2);*/
+            if (eng_e1 == 0)
+            {
+                eng_e2 =(int)(225 +(eng_e2) * f_t);
+            }
+            else if (eng_e1 == 0xff)
+            {
+                eng_e2 =(int) (225 - (eng_e2^0xff ) *f_r);
+            }
+            //计算完成后赋值给Prosim变量
+            p_data.A_FC_ELEVATOR_TRIM.value = eng_e2;
+            
+           
+        }
+
         /// <summary>
         /// 接收的无符号数转为有符号数
         /// </summary>

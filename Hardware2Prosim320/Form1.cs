@@ -415,6 +415,7 @@ namespace Hardware2Prosim320
             {
                 a320_data_tq.A_FC_THROTTLE_LEFT_INPUT = new DataRef("system.analog.A_FC_THROTTLE_LEFT_INPUT", 100, connection);
                 a320_data_tq.A_FC_THROTTLE_RIGHT_INPUT = new DataRef("system.analog.A_FC_THROTTLE_RIGHT_INPUT", 100, connection);
+                a320_data_tq.A_FC_ELEVATOR_TRIM = new DataRef("system.analog.A_FC_ELEVATOR_TRIM", 100, connection);
             }
 
             //CDUL
@@ -839,7 +840,7 @@ namespace Hardware2Prosim320
                             //油门台   配平轮操作
                             if (byteRead[0] == 0xF1 && byteRead.Length == 8)
                             {
-
+                                h.H2P_TQ2(byteRead, ref a320_data_tq);
                             }
                         }
                         else
