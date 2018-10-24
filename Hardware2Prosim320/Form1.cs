@@ -27,14 +27,14 @@ namespace Hardware2Prosim320
         SerialPort sp_StickR = null;
         //临时改为glare控制
         //SerialPort sp_CDUL = null;
-        SerialPort sp_CDUR = null;
+        //SerialPort sp_CDUR = null;
 
         // 硬件连接标志
         bool bGlare;
         bool bTQ;
         //临时改为glare控制
         //bool bCDUL;
-        bool bCDUR;
+        //bool bCDUR;
         bool bStickL;
         bool bStickR;
 
@@ -52,7 +52,7 @@ namespace Hardware2Prosim320
         private Thread td_StickR;
         //临时改为glare控制
         //private Thread td_CDUL;
-        private Thread td_CDUR;
+        //private Thread td_CDUR;
         private List<byte> buffer = new List<byte>(80);
         // 其他参数
         int interval = 50;
@@ -81,9 +81,9 @@ namespace Hardware2Prosim320
 
             td_Glare = new Thread(td_GlareSend);
             //td_CDUL = new Thread(td_CDULSend);
-            td_CDUR = new Thread(td_CDURSend);
-            td_StickL = new Thread(td_StickLSend);
-            td_StickR = new Thread(td_StickRSend);
+            //td_CDUR = new Thread(td_CDURSend);
+            //td_StickL = new Thread(td_StickLSend);
+            //td_StickR = new Thread(td_StickRSend);
             td_TQ = new Thread(td_TQSend);
         }
 
@@ -144,6 +144,7 @@ namespace Hardware2Prosim320
             {
                 a320_data_glare = new A320_Data_Glare();
                 a320_data_cdu_L = new A320_Data_CDU();
+                a320_data_cdu_R = new A320_Data_CDU();
                 OpenCom(ref sp_Glare, textBox_Glare.Text, 9600);
             }
             if(bTQ)
@@ -167,11 +168,11 @@ namespace Hardware2Prosim320
                 a320_data_cdu_L = new A320_Data_CDU();
                 OpenCom(ref sp_CDUL, textBox_CDUL.Text, 9600);
             }*/
-            if (bCDUR)
+           /* if (bCDUR)
             {
                 a320_data_cdu_R = new A320_Data_CDU();
                 OpenCom(ref sp_CDUR, textBox_CDUR.Text, 9600);
-            }
+            }*/
         }
 
         /// <summary>
@@ -214,13 +215,13 @@ namespace Hardware2Prosim320
                     sp_CDUL.Close();
                 }
             }*/
-            if (sp_CDUR != null)
+            /*if (sp_CDUR != null)
             {
                 if (sp_CDUR.IsOpen)
                 {
                     sp_CDUR.Close();
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -232,7 +233,7 @@ namespace Hardware2Prosim320
             bTQ = checkBox_TQ.Checked;
             //临时改为glare控制
             //bCDUL = checkBox_CDUL.Checked;
-            bCDUR = checkBox_CDUR.Checked;
+            //bCDUR = checkBox_CDUR.Checked;
             bStickL = checkBox_StickL.Checked;
             bStickR = checkBox_StickR.Checked;
         }
@@ -407,6 +408,15 @@ namespace Hardware2Prosim320
                 a320_data_glare.S_CTN_WARN2_CHRONO = new DataRef("system.switches.S_MIP_CHRONO_FO", 100, connection);
                 a320_data_glare.S_CTN_WARN2_MASTER_CAUTION = new DataRef("system.switches.S_MIP_MASTER_CAUTION_FO", 100, connection);
                 a320_data_glare.S_CTN_WARN2_MASTER_WARNING = new DataRef("system.switches.S_MIP_MASTER_WARNING_FO", 100, connection);
+
+                //ESP
+                a320_data_glare.I_ENG_FAULT_1 = new DataRef("system.indicators.I_ENG_FAULT_1", 100, connection);
+                a320_data_glare.I_ENG_FAULT_2 = new DataRef("system.indicators.I_ENG_FAULT_2", 100, connection);
+                a320_data_glare.I_ENG_FIRE_1 = new DataRef("system.indicators.I_ENG_FIRE_1", 100, connection);
+                a320_data_glare.I_ENG_FIRE_2 = new DataRef("system.indicators.I_ENG_FIRE_2", 100, connection);
+                a320_data_glare.S_ENG_MASTER_1= new DataRef("system.switches.S_ENG_MASTER_1", 100, connection);
+                a320_data_glare.S_ENG_MASTER_2 = new DataRef("system.switches.S_ENG_MASTER_2", 100, connection);
+                a320_data_glare.S_ENG_MODE = new DataRef("system.switches.S_ENG_MODE", 100, connection);
             }
             
 
@@ -416,19 +426,23 @@ namespace Hardware2Prosim320
                 a320_data_tq.A_FC_THROTTLE_LEFT_INPUT = new DataRef("system.analog.A_FC_THROTTLE_LEFT_INPUT", 100, connection);
                 a320_data_tq.A_FC_THROTTLE_RIGHT_INPUT = new DataRef("system.analog.A_FC_THROTTLE_RIGHT_INPUT", 100, connection);
                 a320_data_tq.A_FC_ELEVATOR_TRIM = new DataRef("system.analog.A_FC_ELEVATOR_TRIM", 100, connection);
+                a320_data_tq.B_FC_ELEVATOR_TRIM_MOTOR_POWR = new DataRef("system.gates.B_FC_ELEVATOR_TRIM_MOTOR_POWER", 100, connection);
+                a320_data_tq.FC_ELEVATOR = new DataRef("aircraft.flightControls.trim.elevator", 100, connection);
+                a320_data_tq.S_FC_THR_INST_DISCONNECT1 = new DataRef("system.switches.S_FC_THR_INST_DISCONNECT1", 100, connection);
+                a320_data_tq.S_FC_THR_INST_DISCONNECT2 = new DataRef("system.switches.S_FC_THR_INST_DISCONNECT2", 100, connection);
             }
 
             //CDUL
             if(a320_data_cdu_L!=null)
             {
                 a320_data_cdu_L.A_CDU_BRIGHTNESS = new DataRef("system.analog.A_CDU1_BRIGHTNESS",100,connection);
-                a320_data_cdu_L.I_CDU_FAIL = new DataRef("system.indicators.I_CDU1_FAIL", 100, connection);
-                a320_data_cdu_L.I_CDU_FM = new DataRef("system.indicators.I_CDU1_FM", 100, connection);
-                a320_data_cdu_L.I_CDU_FM1 = new DataRef("system.indicators.I_CDU1_FM1", 100, connection);
-                a320_data_cdu_L.I_CDU_FM2 = new DataRef("system.indicators.I_CDU1_FM2", 100, connection);
-                a320_data_cdu_L.I_CDU_IND = new DataRef("system.indicators.I_CDU1_IND", 100, connection);
-                a320_data_cdu_L.I_CDU_MCDU_MENU = new DataRef("system.indicators.I_CDU1_MCDU_MENU", 100, connection);
-                a320_data_cdu_L.I_CDU_RDY = new DataRef("system.indicators.I_CDU1_RDY", 100, connection);
+                a320_data_cdu_L.I_CDU1_FAIL = new DataRef("system.indicators.I_CDU1_FAIL", 100, connection);
+                a320_data_cdu_L.I_CDU1_FM = new DataRef("system.indicators.I_CDU1_FM", 100, connection);
+                a320_data_cdu_L.I_CDU1_FM1 = new DataRef("system.indicators.I_CDU1_FM1", 100, connection);
+                a320_data_cdu_L.I_CDU1_FM2 = new DataRef("system.indicators.I_CDU1_FM2", 100, connection);
+                a320_data_cdu_L.I_CDU1_IND = new DataRef("system.indicators.I_CDU1_IND", 100, connection);
+                a320_data_cdu_L.I_CDU1_MCDU_MENU = new DataRef("system.indicators.I_CDU1_MCDU_MENU", 100, connection);
+                a320_data_cdu_L.I_CDU1_RDY = new DataRef("system.indicators.I_CDU1_RDY", 100, connection);
                 a320_data_cdu_L.S_CDU_KEY_0 = new DataRef("system.switches.S_CDU1_KEY_0", 100, connection);
                 a320_data_cdu_L.S_CDU_KEY_1 = new DataRef("system.switches.S_CDU1_KEY_1", 100, connection);
                 a320_data_cdu_L.S_CDU_KEY_2 = new DataRef("system.switches.S_CDU1_KEY_2", 100, connection);
@@ -505,12 +519,13 @@ namespace Hardware2Prosim320
             if (a320_data_cdu_R != null)
             {
                 a320_data_cdu_R.A_CDU_BRIGHTNESS = new DataRef("system.analog.A_CDU2_BRIGHTNESS", 100, connection);
-                a320_data_cdu_R.I_CDU_FM = new DataRef("system.indicators.I_CDU2_FM", 100, connection);
-                a320_data_cdu_R.I_CDU_FM1 = new DataRef("system.indicators.I_CDU2_FM1", 100, connection);
-                a320_data_cdu_R.I_CDU_FM2 = new DataRef("system.indicators.I_CDU2_FM2", 100, connection);
-                a320_data_cdu_R.I_CDU_IND = new DataRef("system.indicators.I_CDU2_IND", 100, connection);
-                a320_data_cdu_R.I_CDU_MCDU_MENU = new DataRef("system.indicators.I_CDU2_MCDU_MENU", 100, connection);
-                a320_data_cdu_R.I_CDU_RDY = new DataRef("system.indicators.I_CDU2_RDY", 100, connection);
+                a320_data_cdu_R.I_CDU2_FAIL = new DataRef("system.indicators.I_CDU2_FAIL", 100, connection);
+                a320_data_cdu_R.I_CDU2_FM = new DataRef("system.indicators.I_CDU2_FM", 100, connection);
+                a320_data_cdu_R.I_CDU2_FM1 = new DataRef("system.indicators.I_CDU2_FM1", 100, connection);
+                a320_data_cdu_R.I_CDU2_FM2 = new DataRef("system.indicators.I_CDU2_FM2", 100, connection);
+                a320_data_cdu_R.I_CDU2_IND = new DataRef("system.indicators.I_CDU2_IND", 100, connection);
+                a320_data_cdu_R.I_CDU2_MCDU_MENU = new DataRef("system.indicators.I_CDU2_MCDU_MENU", 100, connection);
+                a320_data_cdu_R.I_CDU2_RDY = new DataRef("system.indicators.I_CDU2_RDY", 100, connection);
                 a320_data_cdu_R.S_CDU_KEY_0 = new DataRef("system.switches.S_CDU2_KEY_0", 100, connection);
                 a320_data_cdu_R.S_CDU_KEY_1 = new DataRef("system.switches.S_CDU2_KEY_1", 100, connection);
                 a320_data_cdu_R.S_CDU_KEY_2 = new DataRef("system.switches.S_CDU2_KEY_2", 100, connection);
@@ -589,6 +604,12 @@ namespace Hardware2Prosim320
                 a320_data_yoke_L.A_FC_PITCH = new DataRef("system.analog.A_FC_CAPT_PITCH", 100, connection);
                 a320_data_yoke_L.A_FC_ROLL = new DataRef("system.analog.A_FC_CAPT_ROLL", 100, connection);
                 a320_data_yoke_L.A_FC_TILLER = new DataRef("system.analog.A_FC_CAPT_TILLER", 100, connection);
+                a320_data_yoke_L.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_FO_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
+                //脚蹬
+                a320_data_yoke_L.A_FC_BRAKE_LEFT = new DataRef("system.analog.A_FC_BRAKE_LEFT_CAPT", 100, connection);
+                a320_data_yoke_L.A_FC_BRAKE_RIGHT = new DataRef("system.analog.A_FC_BRAKE_RIGHT_CAPT", 100, connection);
+                a320_data_yoke_L.A_FC_CAPT_RUDDER = new DataRef("system.analog.A_FC_CAPT_RUDDER", 100, connection);
+
             }
 
             //Yoke R
@@ -598,6 +619,9 @@ namespace Hardware2Prosim320
                 a320_data_yoke_R.A_FC_ROLL = new DataRef("system.analog.A_FC_FO_ROLL", 100, connection);
                 a320_data_yoke_R.A_FC_TILLER = new DataRef("system.analog.A_FC_FO_TILLER", 100, connection);
                 a320_data_yoke_R.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_CAPT_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
+                //脚蹬
+                a320_data_yoke_R.A_FC_BRAKE_LEFT = new DataRef("system.analog.A_FC_BRAKE_LEFT_FO", 100, connection);
+                a320_data_yoke_R.A_FC_BRAKE_RIGHT = new DataRef("system.analog.A_FC_BRAKE_RIGHT_FO", 100, connection);
             }
         }
         public void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -614,8 +638,11 @@ namespace Hardware2Prosim320
                     while(buffer.Count>=8)
                     {
                         if(
+                            buffer[0] == 0x90 ||
+                            buffer[0] == 0x91 ||
                             buffer[0] == 0xA0 ||
                             buffer[0] == 0xA1 ||
+                            buffer[0] == 0xA2 ||
                             buffer[0] == 0xA3 ||
                             buffer[0] == 0xA4 ||
                             buffer[0] == 0xA5 ||
@@ -645,11 +672,25 @@ namespace Hardware2Prosim320
                             buffer[0] == 0xE5 ||
                             buffer[0] == 0xE6 ||
                             buffer[0] == 0xF0 ||
-                            buffer[0] == 0xF1)
+                            buffer[0] == 0xF1 ||
+                            buffer[0] == 0xF2 
+                            )
                         {
                             byte[] byteRead=new byte[8];
                             buffer.CopyTo(0, byteRead, 0, 8);
                             buffer.RemoveRange(0, 8);
+
+                            // 发动机启动面板 按键
+                            if (byteRead[0] == 0x91 && byteRead.Length == 8)
+                            {
+                                h.H2P_ENG(byteRead, ref a320_data_glare);
+                            }
+
+                            //发动机启动面板 指示灯
+                            if (byteRead[0] == 0x90 && byteRead.Length == 8)
+                            {
+
+                            }
 
                             //左注意警告 按键
                             if (byteRead[0] == 0xA0 && byteRead.Length == 8)
@@ -673,6 +714,12 @@ namespace Hardware2Prosim320
                             if (byteRead[0] == 0xB1 && byteRead.Length == 8)
                             {
 
+                            }
+
+                            //左侧杆 操作
+                            if (byteRead[0] == 0xA2 && byteRead.Length == 8)
+                            {
+                                h.H2P_Stick_1(byteRead, ref a320_data_yoke_L);
                             }
 
                             //右侧杆 操作
@@ -842,6 +889,12 @@ namespace Hardware2Prosim320
                             {
                                 h.H2P_TQ2(byteRead, ref a320_data_tq);
                             }
+
+                            //油门台   配平轮转动
+                            if (byteRead[0] == 0xF2 && byteRead.Length == 8)
+                            {
+
+                            }
                         }
                         else
                         {
@@ -873,22 +926,22 @@ namespace Hardware2Prosim320
             {
                 td_CDUL.Start();
             }*/
-            if (sp_CDUR != null && sp_CDUR.IsOpen)
+            /*if (sp_CDUR != null && sp_CDUR.IsOpen)
             {
                 td_CDUR.Start();
-            }
+            }*/
             if (sp_TQ!=null&&sp_TQ.IsOpen)
             {
                 td_TQ.Start();
             }
-            if (sp_StickL!=null&&sp_StickL.IsOpen)
+            /*if (sp_StickL!=null&&sp_StickL.IsOpen)
             {
                 td_StickL.Start();
             }
             if (sp_StickR != null && sp_StickR.IsOpen)
             {
                 td_StickR.Start();
-            }
+            }*/
         }
         private void StopThreads()
         {
@@ -922,8 +975,13 @@ namespace Hardware2Prosim320
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
                 byte2send = h.P2H_WARN_R(ref a320_data_glare);
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_ENG(ref a320_data_glare);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
                 //临时
-                byte2send = h.P2H_MCDU_1(ref a320_data_cdu_L);
+                byte2send = h.P2H_MCDU_L1(ref a320_data_cdu_L);
+                sp_Glare.Write(byte2send, 0, byte2send.Length);
+
+                byte2send = h.P2H_MCDU_R1(ref a320_data_cdu_R);
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
@@ -932,10 +990,13 @@ namespace Hardware2Prosim320
         {
             while (canStop)
             {
+                byte[] byte2send;
+                byte2send = h.P2H_TQ_1(ref a320_data_tq);
+                sp_TQ.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
         }
-        private void td_StickLSend()
+        /*private void td_StickLSend()
         {
             while (canStop)
             {
@@ -948,13 +1009,13 @@ namespace Hardware2Prosim320
             {
                 Thread.Sleep(interval);
             }
-        }
+        }*/
         private void td_CDULSend()
         {
             while (canStop)
             {
                 byte[] byte2send;
-                byte2send = h.P2H_MCDU_1(ref a320_data_cdu_L);
+                byte2send = h.P2H_MCDU_L1(ref a320_data_cdu_L);
                 //sp_CDUL.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
@@ -964,8 +1025,8 @@ namespace Hardware2Prosim320
             while (canStop)
             {
                 byte[] byte2send;
-                byte2send = h.P2H_MCDU_1(ref a320_data_cdu_R);
-                sp_CDUR.Write(byte2send, 0, byte2send.Length);
+                byte2send = h.P2H_MCDU_R1(ref a320_data_cdu_R);
+                //sp_CDUR.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
         }

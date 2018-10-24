@@ -17,7 +17,12 @@ namespace Hardware2Prosim320
         {
             int UpDown=p_byteRead[1];
             int LeftRight=p_byteRead[2];
+            int TILLER = p_byteRead[4];
+            int LEFT = p_byteRead[5];
+            int RIGHT = p_byteRead[6];
+            int RUDDER = p_byteRead[7];
             int[] state = new int[4];
+            //侧杆 计算
             UpDown = Unsigned2Signed(UpDown);
             LeftRight = Unsigned2Signed(LeftRight);
 
@@ -27,25 +32,43 @@ namespace Hardware2Prosim320
             //计算完成后赋值给Prosim变量
             p_data.A_FC_PITCH.value = UpDown;
             p_data.A_FC_ROLL.value = LeftRight;
+
+            //转弯手轮 计算
+            TILLER = Unsigned2Signed(TILLER);
+
+            TILLER = 512 + TILLER * 34;
+
+            //计算完成后赋值给Prosim变量
+            p_data.A_FC_TILLER.value = TILLER;
+
+            //脚蹬 计算
+            LEFT = Unsigned2Signed(LEFT);
+            RIGHT = Unsigned2Signed(RIGHT);
+
+            LEFT = 0 + LEFT * 25;
+            RIGHT = 0 + RIGHT * 25;
+
+            //计算完成后赋值给Prosim变量
+            p_data.A_FC_BRAKE_LEFT.value = LEFT;
+            p_data.A_FC_BRAKE_RIGHT.value = RIGHT;
+
+            //方向舵 计算
+            RUDDER = Unsigned2Signed(RUDDER);
+
+            RUDDER = 512 + RUDDER * 24;
+
+            //计算完成后赋值给Promsim变量
+            p_data.A_FC_CAPT_RUDDER.value = RUDDER;
+
             //按键
-           
+
             //KB1
             state = SplitData(p_byteRead[3]);
             p_data.S_FC_DISCONNECT.value = 1 - state[0];
         }
-      /*  /// <summary>
-        /// 侧杆按键
-        /// </summary>
-        /// <param name="p_byteRead"></param>
-        /// <param name="p_data"></param>
-        public void H2P_Stick_2(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data) 
-        {
-            int[] state = new int[4];
+     
 
-            //KB1
-            state = SplitData(p_byteRead[1]);
-            p_data.S_FC_DISCONNECT.value = 1 - state[0];
-        }*/
+
         /// <summary>
         /// MCDU 按键1
         /// </summary>
@@ -206,43 +229,83 @@ namespace Hardware2Prosim320
         /// MCDU 指示灯
         /// </summary>
         /// <param name="p_data"></param>
-        public byte[] P2H_MCDU_1(ref A320_Data_CDU p_data)
+        public byte[] P2H_MCDU_L1(ref A320_Data_CDU p_data)
         {
             byte[] p_byteSend = new byte[8];
 
             p_byteSend[0] = 0xA7;
             p_byteSend[1] = 0;
-            if ((byte)(p_data.I_CDU_MCDU_MENU.value) == 2)
+            if ((byte)(p_data.I_CDU1_MCDU_MENU.value) == 2)
             {
                 p_byteSend[1] += 128;
             }
-            if ((byte)(p_data.I_CDU_FAIL.value) == 2)
+            if ((byte)(p_data.I_CDU1_FAIL.value) == 2)
             {
                 p_byteSend[1] += 64;
             }
-            if ((byte)(p_data.I_CDU_FM.value) == 2)
+            if ((byte)(p_data.I_CDU1_FM.value) == 2)
             {
                 p_byteSend[1] += 32;
             }
-            if ((byte)(p_data.I_CDU_FM1.value) == 2)
+            if ((byte)(p_data.I_CDU1_FM1.value) == 2)
             {
                 p_byteSend[1] += 16;
             }
-            if ((byte)(p_data.I_CDU_IND.value) == 2)
+            if ((byte)(p_data.I_CDU1_IND.value) == 2)
             {
                 p_byteSend[1] += 8;
             }
-            if ((byte)(p_data.I_CDU_RDY.value) == 2)
+            if ((byte)(p_data.I_CDU1_RDY.value) == 2)
             {
                 p_byteSend[1] += 4;
             }
-            if ((byte)(p_data.I_CDU_FM2.value) == 2)
+            if ((byte)(p_data.I_CDU1_FM2.value) == 2)
             {
                 p_byteSend[1] += 2;
             }
             return p_byteSend;
         }
 
+        /// <summary>
+        /// MCDU 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        public byte[] P2H_MCDU_R1(ref A320_Data_CDU p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0xB5;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_CDU2_MCDU_MENU.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_CDU2_FAIL.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_CDU2_FM.value) == 2)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_CDU2_FM1.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+            if ((byte)(p_data.I_CDU2_IND.value) == 2)
+            {
+                p_byteSend[1] += 8;
+            }
+            if ((byte)(p_data.I_CDU2_RDY.value) == 2)
+            {
+                p_byteSend[1] += 4;
+            }
+            if ((byte)(p_data.I_CDU2_FM2.value) == 2)
+            {
+                p_byteSend[1] += 2;
+            }
+            return p_byteSend;
+        }
         /// <summary>
         /// 遮光罩 EFIS左 按键
         /// </summary>
@@ -341,7 +404,7 @@ namespace Hardware2Prosim320
 
             p_byteSend[0] = 0xC1;
             p_byteSend[1]= 0;
-            if((byte)(p_data.I_FCU_EFIS1_CSTR.value)==2)
+            if((byte)(p_data.I_FCU_EFIS1_CSTR.value)== 2)
             {
                 p_byteSend[1] += 128;
             }
@@ -1119,6 +1182,55 @@ namespace Hardware2Prosim320
         }
 
         /// <summary>
+        /// 发动机启动面板 按键
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_ENG(byte[] p_byteRead, ref A320_Data_Glare p_data)
+        {
+            if (p_byteRead[1] == 0x01) p_data.S_ENG_MASTER_1.value = 0; //MASTER_1 OFF
+            else p_data.S_ENG_MASTER_1.value = 1; //MASTER_ ON
+
+            if (p_byteRead[2] == 0x01) p_data.S_ENG_MASTER_2.value = 0; //MASTER_2 OFF
+            else p_data.S_ENG_MASTER_2.value = 1; //MASTER_2 ON
+
+            if (p_byteRead[3] == 0x01) p_data.S_ENG_MODE.value = 0; //CRANK
+            else if (p_byteRead[3] == 0x02) p_data.S_ENG_MODE.value = 1; //NORM
+            else if (p_byteRead[3] == 0x04) p_data.S_ENG_MODE.value = 2; //NORM
+        }
+
+        /// <summary>
+        /// 发动机启动面板 指示灯
+        /// </summary>
+        /// <param name="p_data"></param>
+        /// <returns></returns>
+        public byte[] P2H_ENG(ref A320_Data_Glare p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+
+            p_byteSend[0] = 0x91;
+            p_byteSend[1] = 0;
+            if ((byte)(p_data.I_ENG_FIRE_1.value) == 2)
+            {
+                p_byteSend[1] += 128;
+            }
+            if ((byte)(p_data.I_ENG_FAULT_1.value) == 2)
+            {
+                p_byteSend[1] += 64;
+            }
+            if ((byte)(p_data.I_ENG_FIRE_2.value) == 2)
+            {
+                p_byteSend[1] += 32;
+            }
+            if ((byte)(p_data.I_ENG_FAULT_2.value) == 2)
+            {
+                p_byteSend[1] += 16;
+            }
+           
+            return p_byteSend;
+        }
+
+        /// <summary>
         /// 油门台   油门操作
         /// </summary>
         /// <param name="p_byteRead"></param>
@@ -1190,6 +1302,15 @@ namespace Hardware2Prosim320
             {
                 eng_r = 5001;
             }
+            ///油门台 按键
+            int[] state = new int[4];
+
+            //KB3
+            state = SplitData(p_byteRead[3]);
+            p_data.S_FC_THR_INST_DISCONNECT1.value = 1 - state[3];
+            //KB4
+            state = SplitData(p_byteRead[4]);
+            p_data.S_FC_THR_INST_DISCONNECT2.value = 1 - state[3];
 
             //计算完成后赋值给Prosim变量
             p_data.A_FC_THROTTLE_LEFT_INPUT.value = eng_l;
@@ -1197,6 +1318,8 @@ namespace Hardware2Prosim320
         }
 
 
+
+        
         /// <summary>
         /// 油门台   配平轮操作
         /// </summary>
@@ -1204,26 +1327,64 @@ namespace Hardware2Prosim320
         /// <param name="p_data"></param>
         public void H2P_TQ2(byte[] p_byteRead, ref A320_Data_TQ p_data)
         {
-            
+           
             int eng_e1 = p_byteRead[1];
             int eng_e2 = p_byteRead[2];
+           
             double f_t = 5.7;
             double f_r = 5.625;
             int[] state = new int[4];
-          /*  eng_e1 = Unsigned2Signed(eng_e1);
-            eng_e2 = Unsigned2Signed(eng_e2);*/
-            if (eng_e1 == 0)
-            {
-                eng_e2 =(int)(225 +(eng_e2) * f_t);
-            }
-            else if (eng_e1 == 0xff)
-            {
-                eng_e2 =(int) (225 - (eng_e2^0xff ) *f_r);
-            }
-            //计算完成后赋值给Prosim变量
-            p_data.A_FC_ELEVATOR_TRIM.value = eng_e2;
-            
+            /*  eng_e1 = Unsigned2Signed(eng_e1);
+              eng_e2 = Unsigned2Signed(eng_e2);*/
            
+            
+                if (eng_e1 == 0)
+                {
+                    eng_e2 = (int)(225 + (eng_e2) * f_t);
+                }
+                else if(eng_e1 == 0xff)
+                {
+                    eng_e2 = (int)(225 - (eng_e2 ^ 0xff) * f_r);
+                }
+                //计算完成后赋值给Prosim变量
+                p_data.A_FC_ELEVATOR_TRIM.value = eng_e2;
+            
+        }
+
+        /// <summary>
+        /// 油门台   配平轮随动
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public byte[] P2H_TQ_1(  ref A320_Data_TQ p_data)
+        {
+            byte[] p_byteSend = new byte[8];
+            int trim = (int)((double)(p_data.FC_ELEVATOR.value) * 10);
+            double f_1 = 5.7;
+            p_byteSend[0] = 0xF2;
+            p_byteSend[1] = 0;
+            if ((bool)(p_data.B_FC_ELEVATOR_TRIM_MOTOR_POWR.value) == true)
+            {
+                if ((trim > (int)((((int)p_data.A_FC_ELEVATOR_TRIM.value - 225) / f_1) - 2)) && (trim < (int)((((int)p_data.A_FC_ELEVATOR_TRIM.value - 225) / f_1) + 2)))
+                {
+                    p_byteSend[0] += 1;
+                }
+               else if (trim > (int)(((int)p_data.A_FC_ELEVATOR_TRIM.value-225)/f_1))
+                {
+                    p_byteSend[1] += 2;
+                } 
+                else if (trim < (int)(((int)p_data.A_FC_ELEVATOR_TRIM.value - 225) / f_1))
+                {
+                    p_byteSend[1] += 1;
+                }
+              
+            }
+            else
+            {
+                p_byteSend[0] += 1;
+            }
+            return p_byteSend;
+
         }
 
         /// <summary>

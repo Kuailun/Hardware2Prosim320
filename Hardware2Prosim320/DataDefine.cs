@@ -145,23 +145,42 @@ namespace Hardware2Prosim320
         public DataRef S_CTN_WARN2_MASTER_CAUTION;
         public DataRef S_CTN_WARN2_MASTER_WARNING;
 
+        //ESP
+        public DataRef I_ENG_FAULT_1;
+        public DataRef I_ENG_FAULT_2;
+        public DataRef I_ENG_FIRE_1;
+        public DataRef I_ENG_FIRE_2;
+        public DataRef S_ENG_MASTER_1;
+        public DataRef S_ENG_MASTER_2;
+        public DataRef S_ENG_MODE;
     }
     class A320_Data_TQ
     {
         public DataRef A_FC_THROTTLE_LEFT_INPUT;
         public DataRef A_FC_THROTTLE_RIGHT_INPUT;
         public DataRef A_FC_ELEVATOR_TRIM;
+        public DataRef B_FC_ELEVATOR_TRIM_MOTOR_POWR;
+        public DataRef FC_ELEVATOR;
+        public DataRef S_FC_THR_INST_DISCONNECT1;
+        public DataRef S_FC_THR_INST_DISCONNECT2;
     }
     class A320_Data_CDU
     {
         public DataRef A_CDU_BRIGHTNESS;
-        public DataRef I_CDU_FAIL;
-        public DataRef I_CDU_FM;
-        public DataRef I_CDU_FM1;
-        public DataRef I_CDU_FM2;
-        public DataRef I_CDU_IND;
-        public DataRef I_CDU_MCDU_MENU;
-        public DataRef I_CDU_RDY;
+        public DataRef I_CDU1_FAIL;
+        public DataRef I_CDU1_FM;
+        public DataRef I_CDU1_FM1;
+        public DataRef I_CDU1_FM2;
+        public DataRef I_CDU1_IND;
+        public DataRef I_CDU1_MCDU_MENU;
+        public DataRef I_CDU1_RDY;
+        public DataRef I_CDU2_FAIL;
+        public DataRef I_CDU2_FM;
+        public DataRef I_CDU2_FM1;
+        public DataRef I_CDU2_FM2;
+        public DataRef I_CDU2_IND;
+        public DataRef I_CDU2_MCDU_MENU;
+        public DataRef I_CDU2_RDY;
         public DataRef S_CDU_KEY_0;
         public DataRef S_CDU_KEY_1;
         public DataRef S_CDU_KEY_2;
@@ -239,5 +258,8 @@ namespace Hardware2Prosim320
         public DataRef A_FC_ROLL;
         public DataRef A_FC_TILLER;
         public DataRef S_FC_DISCONNECT;
+        public DataRef A_FC_BRAKE_LEFT;
+        public DataRef A_FC_BRAKE_RIGHT;
+        public DataRef A_FC_CAPT_RUDDER;
     }
 }
