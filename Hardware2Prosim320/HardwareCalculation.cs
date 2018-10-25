@@ -1307,10 +1307,10 @@ namespace Hardware2Prosim320
 
             //KB3
             state = SplitData(p_byteRead[3]);
-            p_data.S_FC_THR_INST_DISCONNECT1.value = 1 - state[3];
+            p_data.S_FC_THR_INST_DISCONNECT1.value = 1 - state[0];
             //KB4
             state = SplitData(p_byteRead[4]);
-            p_data.S_FC_THR_INST_DISCONNECT2.value = 1 - state[3];
+            p_data.S_FC_THR_INST_DISCONNECT2.value = 1 - state[0];
 
             //计算完成后赋值给Prosim变量
             p_data.A_FC_THROTTLE_LEFT_INPUT.value = eng_l;

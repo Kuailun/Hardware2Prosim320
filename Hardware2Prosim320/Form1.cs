@@ -604,7 +604,7 @@ namespace Hardware2Prosim320
                 a320_data_yoke_L.A_FC_PITCH = new DataRef("system.analog.A_FC_CAPT_PITCH", 100, connection);
                 a320_data_yoke_L.A_FC_ROLL = new DataRef("system.analog.A_FC_CAPT_ROLL", 100, connection);
                 a320_data_yoke_L.A_FC_TILLER = new DataRef("system.analog.A_FC_CAPT_TILLER", 100, connection);
-                a320_data_yoke_L.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_FO_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
+                a320_data_yoke_L.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_CAPT_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
                 //脚蹬
                 a320_data_yoke_L.A_FC_BRAKE_LEFT = new DataRef("system.analog.A_FC_BRAKE_LEFT_CAPT", 100, connection);
                 a320_data_yoke_L.A_FC_BRAKE_RIGHT = new DataRef("system.analog.A_FC_BRAKE_RIGHT_CAPT", 100, connection);
@@ -618,7 +618,7 @@ namespace Hardware2Prosim320
                 a320_data_yoke_R.A_FC_PITCH = new DataRef("system.analog.A_FC_FO_PITCH", 100, connection);
                 a320_data_yoke_R.A_FC_ROLL = new DataRef("system.analog.A_FC_FO_ROLL", 100, connection);
                 a320_data_yoke_R.A_FC_TILLER = new DataRef("system.analog.A_FC_FO_TILLER", 100, connection);
-                a320_data_yoke_R.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_CAPT_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
+                a320_data_yoke_R.S_FC_DISCONNECT = new DataRef("system.switches.S_FC_FO_INST_DISCONNECT", 100, connection); //新增侧杆按键 2018.8.27
                 //脚蹬
                 a320_data_yoke_R.A_FC_BRAKE_LEFT = new DataRef("system.analog.A_FC_BRAKE_LEFT_FO", 100, connection);
                 a320_data_yoke_R.A_FC_BRAKE_RIGHT = new DataRef("system.analog.A_FC_BRAKE_RIGHT_FO", 100, connection);
