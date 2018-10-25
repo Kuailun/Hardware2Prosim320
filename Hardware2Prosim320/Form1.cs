@@ -635,7 +635,6 @@ namespace Hardware2Prosim320
                     sp.Read(byteRead0, 0, byteRead0.Length);
                     sp.DiscardInBuffer();
                     buffer.AddRange(byteRead0);
-                    
                     while(buffer.Count>=8)
                     {
                         if(
