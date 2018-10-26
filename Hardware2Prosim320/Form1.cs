@@ -627,8 +627,8 @@ namespace Hardware2Prosim320
         public void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            try
-            {
+            //try
+            //{
                 if (sp.IsOpen)
                 {
                     byte[] byteRead0 = new byte[sp.BytesToRead];
@@ -678,7 +678,11 @@ namespace Hardware2Prosim320
                         {
                             byte[] byteRead=new byte[8];
                             buffer.CopyTo(0, byteRead, 0, 8);
+                            if(buffer.Count>=8)
+                        {
                             buffer.RemoveRange(0, 8);
+                        }
+                            
 
                             try
                             {
@@ -910,11 +914,11 @@ namespace Hardware2Prosim320
                         }
                     }  
                 }
-            }
-            catch (Exception ee)
-            {
-                Console.WriteLine(ee);
-            }
+            //}
+            //catch (Exception ee)
+            //{
+            //    Console.WriteLine(ee);
+            //}
 
             //throw new NotImplementedException();
         }
