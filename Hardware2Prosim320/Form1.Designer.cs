@@ -76,7 +76,7 @@
             this.textBox_Glare.Name = "textBox_Glare";
             this.textBox_Glare.Size = new System.Drawing.Size(100, 21);
             this.textBox_Glare.TabIndex = 2;
-            this.textBox_Glare.Text = "COM5";
+            this.textBox_Glare.Text = "COM18";
             // 
             // textBox_TQ
             // 
@@ -84,7 +84,7 @@
             this.textBox_TQ.Name = "textBox_TQ";
             this.textBox_TQ.Size = new System.Drawing.Size(100, 21);
             this.textBox_TQ.TabIndex = 5;
-            this.textBox_TQ.Text = "COM4";
+            this.textBox_TQ.Text = "COM17";
             // 
             // label2
             // 
@@ -168,7 +168,7 @@
             this.textBox_StickR.Name = "textBox_StickR";
             this.textBox_StickR.Size = new System.Drawing.Size(100, 21);
             this.textBox_StickR.TabIndex = 17;
-            this.textBox_StickR.Text = "COM5";
+            this.textBox_StickR.Text = "COM14";
             // 
             // label5
             // 
@@ -196,7 +196,7 @@
             this.textBox_StickL.Name = "textBox_StickL";
             this.textBox_StickL.Size = new System.Drawing.Size(100, 21);
             this.textBox_StickL.TabIndex = 14;
-            this.textBox_StickL.Text = "COM7";
+            this.textBox_StickL.Text = "COM13";
             // 
             // label6
             // 

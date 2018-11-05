@@ -63,7 +63,8 @@ namespace Hardware2Prosim320
         {
             InitializeComponent();
 
-            Initialize();            
+            Initialize();
+            
         }
 
         /// <summary>
@@ -85,6 +86,8 @@ namespace Hardware2Prosim320
             //td_StickL = new Thread(td_StickLSend);
             //td_StickR = new Thread(td_StickRSend);
             td_TQ = new Thread(td_TQSend);
+            //button_Connect.PerformClick();
+
         }
 
         /// <summary>
@@ -105,7 +108,7 @@ namespace Hardware2Prosim320
                 try
                 {
                     //连接本地端Prosim
-                    connection.Connect("127.0.0.1");
+                   connection.Connect("127.0.0.1");
                 }
                 catch (Exception ex)
                 {

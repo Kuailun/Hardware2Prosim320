@@ -17,6 +17,7 @@ namespace Hardware2Prosim320
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Hardware2Prosim());
+          
         }
     }
 }
