@@ -264,6 +264,7 @@
             this.Controls.Add(this.checkBox_Glare);
             this.Name = "Hardware2Prosim";
             this.Text = "Hardware2Prosim";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Hardware2Prosim_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

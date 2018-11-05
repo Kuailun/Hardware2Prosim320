@@ -88,6 +88,16 @@ namespace Hardware2Prosim320
             td_TQ = new Thread(td_TQSend);
             //button_Connect.PerformClick();
 
+            checkBox_Glare.Checked = true;
+            checkBox_TQ.Checked = true;
+            checkBox_CDUL.Checked = false;
+            checkBox_CDUR.Checked = false;
+            checkBox_StickL.Checked = true;
+            checkBox_StickR.Checked = true;
+
+            object o = null;
+            EventArgs e = null;
+            button_Connect_Click(o,e);
         }
 
         /// <summary>
@@ -1000,6 +1010,8 @@ namespace Hardware2Prosim320
                 sp_Glare.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
+            td_Glare = new Thread(td_GlareSend);
+            GC.Collect();
         }
         private void td_TQSend()
         {
@@ -1010,6 +1022,8 @@ namespace Hardware2Prosim320
                 sp_TQ.Write(byte2send, 0, byte2send.Length);
                 Thread.Sleep(interval);
             }
+            td_TQ = new Thread(td_TQSend);
+            GC.Collect();
         }
         /*private void td_StickLSend()
         {
@@ -1092,6 +1106,16 @@ namespace Hardware2Prosim320
             {
                 textBox_StickR.Enabled = true;
             }
+        }
+
+        private void Hardware2Prosim_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            connection.Dispose();
+            connection = new ProSimConnect();
+            WriteLine("已断开与ProSim320的连接");
+            button_Connect.Text = "连接";
+            StopThreads();
+            CloseComms();
         }
     }
 }
