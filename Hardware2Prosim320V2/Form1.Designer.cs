@@ -75,6 +75,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.textBox_Glare);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.checkBox_Glare);
+            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -116,7 +117,7 @@
             this.textBox_YokeR.Name = "textBox_YokeR";
             this.textBox_YokeR.Size = new System.Drawing.Size(79, 21);
             this.textBox_YokeR.TabIndex = 37;
-            this.textBox_YokeR.Text = "COM11";
+            this.textBox_YokeR.Text = "COM14";
             // 
             // label5
             // 
@@ -143,7 +144,8 @@
             this.textBox_YokeL.Name = "textBox_YokeL";
             this.textBox_YokeL.Size = new System.Drawing.Size(79, 21);
             this.textBox_YokeL.TabIndex = 34;
-            this.textBox_YokeL.Text = "COM9";
+            this.textBox_YokeL.Text = "COM13";
+            this.textBox_YokeL.TextChanged += new System.EventHandler(this.textBox_YokeL_TextChanged);
             // 
             // label6
             // 
@@ -170,7 +172,8 @@
             this.textBox_TQ.Name = "textBox_TQ";
             this.textBox_TQ.Size = new System.Drawing.Size(79, 21);
             this.textBox_TQ.TabIndex = 25;
-            this.textBox_TQ.Text = "COM7";
+            this.textBox_TQ.Text = "COM22";
+            this.textBox_TQ.TextChanged += new System.EventHandler(this.textBox_TQ_TextChanged);
             // 
             // label2
             // 
@@ -197,7 +200,8 @@
             this.textBox_Glare.Name = "textBox_Glare";
             this.textBox_Glare.Size = new System.Drawing.Size(79, 21);
             this.textBox_Glare.TabIndex = 22;
-            this.textBox_Glare.Text = "COM4";
+            this.textBox_Glare.Text = "COM23";
+            this.textBox_Glare.TextChanged += new System.EventHandler(this.textBox_Glare_TextChanged);
             // 
             // label1
             // 

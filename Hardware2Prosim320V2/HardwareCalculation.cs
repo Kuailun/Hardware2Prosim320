@@ -17,11 +17,11 @@ namespace Hardware2Prosim320
         {
             int UpDown=p_byteRead[1];
             int LeftRight=p_byteRead[2];
-            int TILLER = p_byteRead[4];
-            int LEFT = p_byteRead[5];
-            int RIGHT = p_byteRead[6];
-            int RUDDER = p_byteRead[7];
-            int[] state = new int[4];
+            int TILLER = p_byteRead[3];
+            int LEFT = p_byteRead[4];
+            int RIGHT = p_byteRead[5];
+            //int RUDDER = p_byteRead[7];
+            //int[] state = new int[4];
             //侧杆 计算
             UpDown = Unsigned2Signed(UpDown);
             LeftRight = Unsigned2Signed(LeftRight);
@@ -52,6 +52,32 @@ namespace Hardware2Prosim320
             p_data.A_FC_BRAKE_LEFT.value = LEFT;
             p_data.A_FC_BRAKE_RIGHT.value = RIGHT;
 
+            /*    //方向舵 计算                         //可能会造成干扰，另做处理
+                RUDDER = Unsigned2Signed(RUDDER);
+
+                RUDDER = 512 + RUDDER * 24;
+
+                //计算完成后赋值给Promsim变量
+                p_data.A_FC_CAPT_RUDDER.value = RUDDER;
+
+                //按键
+
+                //KB1
+                state = SplitData(p_byteRead[3]);
+                p_data.S_FC_DISCONNECT.value = 1 - state[0];
+                */
+        }
+
+        /// <summary>
+        /// 左侧杆 （方向舵）操作 2018.12.3
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_Stick_2(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data)
+        {
+            int RUDDER = p_byteRead[1];
+            int[] state = new int[4];
+
             //方向舵 计算
             RUDDER = Unsigned2Signed(RUDDER);
 
@@ -59,15 +85,22 @@ namespace Hardware2Prosim320
 
             //计算完成后赋值给Promsim变量
             p_data.A_FC_CAPT_RUDDER.value = RUDDER;
+        }
+
+        /// <summary>
+        /// 左侧杆 （按键）操作 2018.12.3
+        /// </summary>
+        /// <param name="p_byteRead"></param>
+        /// <param name="p_data"></param>
+        public void H2P_Stick_3(byte[] p_byteRead, ref A320_Data_FC_YOKE p_data)
+        {
 
             //按键
-
+            int[] state = new int[4];
             //KB1
-            state = SplitData(p_byteRead[3]);
+            state = SplitData(p_byteRead[1]);
             p_data.S_FC_DISCONNECT.value = 1 - state[0];
         }
-     
-
 
         /// <summary>
         /// MCDU 按键1
@@ -1208,7 +1241,7 @@ namespace Hardware2Prosim320
         {
             byte[] p_byteSend = new byte[8];
 
-            p_byteSend[0] = 0x91;
+            p_byteSend[0] = 0x90;
             p_byteSend[1] = 0;
             if ((byte)(p_data.I_ENG_FIRE_1.value) == 2)
             {
@@ -1361,7 +1394,7 @@ namespace Hardware2Prosim320
             byte[] p_byteSend = new byte[8];
             int trim = (int)((double)(p_data.FC_ELEVATOR.value) * 10);
             double f_1 = 5.7;
-            p_byteSend[0] = 0xF2;
+            p_byteSend[0] = 0xB8;
             p_byteSend[1] = 0;
             if ((bool)(p_data.B_FC_ELEVATOR_TRIM_MOTOR_POWR.value) == true)
             {

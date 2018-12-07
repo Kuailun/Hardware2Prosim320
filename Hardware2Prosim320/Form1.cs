@@ -1117,5 +1117,10 @@ namespace Hardware2Prosim320
             StopThreads();
             CloseComms();
         }
+
+        private void textBox_Glare_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

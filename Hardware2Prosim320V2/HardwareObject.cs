@@ -538,17 +538,24 @@ namespace Hardware2Prosim320V2
                         buffer[0] == 0xA5 ||
                         buffer[0] == 0xA6 ||
                         buffer[0] == 0xA7 ||
+                        buffer[0] == 0xA8 ||
+                        buffer[0] == 0xA9 ||
                         buffer[0] == 0xB0 ||
                         buffer[0] == 0xB1 ||
                         buffer[0] == 0xB2 ||
                         buffer[0] == 0xB3 ||
                         buffer[0] == 0xB4 ||
                         buffer[0] == 0xB5 ||
+                        buffer[0] == 0xB6 ||
+                        buffer[0] == 0xB7 ||
+                        buffer[0] == 0xB8 ||
+                        buffer[0] == 0xB9 ||
                         buffer[0] == 0xC0 ||
                         buffer[0] == 0xC1 ||
                         buffer[0] == 0xC2 ||
                         buffer[0] == 0xC3 ||
                         buffer[0] == 0xC4 ||
+                        buffer[0] == 0xC5 ||
                         buffer[0] == 0xD0 ||
                         buffer[0] == 0xD1 ||
                         buffer[0] == 0xD2 ||
@@ -560,10 +567,7 @@ namespace Hardware2Prosim320V2
                         buffer[0] == 0xE3 ||
                         buffer[0] == 0xE4 ||
                         buffer[0] == 0xE5 ||
-                        buffer[0] == 0xE6 ||
-                        buffer[0] == 0xF0 ||
-                        buffer[0] == 0xF1 ||
-                        buffer[0] == 0xF2
+                        buffer[0] == 0xE6 
                         )
                     {
                         byte[] byteRead = new byte[8];
@@ -612,16 +616,34 @@ namespace Hardware2Prosim320V2
 
                             }
 
-                            //左侧杆 操作
+                            //左侧杆 （侧杆操纵、转弯手轮、ca刹车）操作  2018.12.3
                             if (byteRead[0] == 0xA2 && byteRead.Length == 8)
                             {
                                 h.H2P_Stick_1(byteRead, ref a320_data_yoke_L);
+                            }
+
+                            //左侧杆 （方向舵）操作 2018.12.3
+                            if (byteRead[0] == 0xA8 && byteRead.Length == 8)
+                            {
+                                h.H2P_Stick_2(byteRead, ref a320_data_yoke_L);
+                            }
+
+                            //左侧杆 （按键）操作 2018.12.3
+                            if (byteRead[0] == 0xA9 && byteRead.Length == 8)
+                            {
+                                h.H2P_Stick_3(byteRead, ref a320_data_yoke_L);
                             }
 
                             //右侧杆 操作
                             if (byteRead[0] == 0xA3 && byteRead.Length == 8)
                             {
                                 h.H2P_Stick_1(byteRead, ref a320_data_yoke_R);
+                            }
+
+                            //右侧杆 （按键）操作 2018.12.3
+                            if (byteRead[0] == 0xC5 && byteRead.Length == 8)
+                            {
+                                h.H2P_Stick_3(byteRead, ref a320_data_yoke_R);
                             }
 
                             //左MCDU 按键1
@@ -775,22 +797,29 @@ namespace Hardware2Prosim320V2
                             }
 
                             //油门台   油门操作
-                            if (byteRead[0] == 0xF0 && byteRead.Length == 8)
+                            if (byteRead[0] == 0xB6 && byteRead.Length == 8)
                             {
                                 h.H2P_TQ1(byteRead, ref a320_data_tq);
                             }
 
                             //油门台   配平轮操作
-                            if (byteRead[0] == 0xF1 && byteRead.Length == 8)
+                            if (byteRead[0] == 0xB7 && byteRead.Length == 8)
                             {
                                 h.H2P_TQ2(byteRead, ref a320_data_tq);
                             }
 
                             //油门台   配平轮转动
-                            if (byteRead[0] == 0xF2 && byteRead.Length == 8)
+                            if (byteRead[0] == 0xB8 && byteRead.Length == 8)
                             {
 
                             }
+
+                            //油门台   配平轮停止
+                            if (byteRead[0] == 0xB9 && byteRead.Length == 8)
+                            {
+
+                            }
+
                         }
                         catch (Exception ee)
                         {

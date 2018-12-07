@@ -157,5 +157,29 @@ namespace Hardware2Prosim320V2
 
 
         }
+
+        private void textBox_Glare_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_TQ_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_YokeL_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void textBox_YokeR_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

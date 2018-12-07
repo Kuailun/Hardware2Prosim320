@@ -76,7 +76,8 @@
             this.textBox_Glare.Name = "textBox_Glare";
             this.textBox_Glare.Size = new System.Drawing.Size(100, 21);
             this.textBox_Glare.TabIndex = 2;
-            this.textBox_Glare.Text = "COM18";
+            this.textBox_Glare.Text = "COM25";
+            this.textBox_Glare.TextChanged += new System.EventHandler(this.textBox_Glare_TextChanged);
             // 
             // textBox_TQ
             // 
@@ -84,7 +85,7 @@
             this.textBox_TQ.Name = "textBox_TQ";
             this.textBox_TQ.Size = new System.Drawing.Size(100, 21);
             this.textBox_TQ.TabIndex = 5;
-            this.textBox_TQ.Text = "COM17";
+            this.textBox_TQ.Text = "COM24";
             // 
             // label2
             // 
