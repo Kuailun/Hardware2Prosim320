@@ -42,6 +42,11 @@ namespace Hardware2Prosim320V2
             checkBox_TQ.Checked = true;
             checkBox_YokeL.Checked = true;
             checkBox_YokeR.Checked = true;
+
+
+            object o = null;
+            EventArgs e = null;
+            button_Connect_Click(o, e);
         }
 
         private void WriteLine(string p_line)

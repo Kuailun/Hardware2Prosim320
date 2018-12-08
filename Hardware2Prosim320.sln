@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardware2Prosim320", "Hardware2Prosim320\Hardware2Prosim320.csproj", "{4CF98E86-8F35-4AF9-903B-F2D54CBF27D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputTest", "InputTest\InputTest.csproj", "{80DFFC9C-D4E1-4FDC-9428-1AD6ACE79C14}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartEXE", "StartEXE\StartEXE.csproj", "{BC0DEC1C-DF38-4774-BE1E-93BA6E993326}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hardware2Prosim320V2", "Hardware2Prosim320V2\Hardware2Prosim320V2.csproj", "{5BD37546-160B-4C73-9C2C-223FDEE9B7DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +29,15 @@ Global
 		{BC0DEC1C-DF38-4774-BE1E-93BA6E993326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC0DEC1C-DF38-4774-BE1E-93BA6E993326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC0DEC1C-DF38-4774-BE1E-93BA6E993326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD37546-160B-4C73-9C2C-223FDEE9B7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD37546-160B-4C73-9C2C-223FDEE9B7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD37546-160B-4C73-9C2C-223FDEE9B7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD37546-160B-4C73-9C2C-223FDEE9B7DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B02C956E-C705-482E-A755-FF90EE41859E}
 	EndGlobalSection
 EndGlobal
