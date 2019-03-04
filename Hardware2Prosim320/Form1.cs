@@ -904,16 +904,16 @@ namespace Hardware2Prosim320
                                 }
 
                                 //油门台   配平轮操作
-                                if (byteRead[0] == 0xF1 && byteRead.Length == 8)
+                              /*  if (byteRead[0] == 0xF1 && byteRead.Length == 8)
                                 {
                                     h.H2P_TQ2(byteRead, ref a320_data_tq);
-                                }
+                                }*/
 
                                 //油门台   配平轮转动
-                                if (byteRead[0] == 0xF2 && byteRead.Length == 8)
+                               /* if (byteRead[0] == 0xF2 && byteRead.Length == 8)
                                 {
 
-                                }
+                                }*/
                             }
                             catch(Exception ee)
                             {
@@ -1018,8 +1018,8 @@ namespace Hardware2Prosim320
             while (canStop)
             {
                 byte[] byte2send;
-                byte2send = h.P2H_TQ_1(ref a320_data_tq);
-                sp_TQ.Write(byte2send, 0, byte2send.Length);
+              /*  byte2send = h.P2H_TQ_1(ref a320_data_tq);
+                sp_TQ.Write(byte2send, 0, byte2send.Length);*/
                 Thread.Sleep(interval);
             }
             td_TQ = new Thread(td_TQSend);

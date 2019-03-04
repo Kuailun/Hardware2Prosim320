@@ -362,7 +362,7 @@ namespace Hardware2Prosim320
             p_data.S_FCU_EFIS1_LS.value = 1 - state[1];
             if(1-state[0]==1)//触发了
             {
-                p_data.S_FCU_EFIS1_BARO_STD.value = 2;
+                p_data.S_FCU_EFIS1_BARO_STD.value = 1;
             }            
             else
             {
@@ -373,7 +373,7 @@ namespace Hardware2Prosim320
             state = SplitData(p_byteRead[3]);
             if (1 - state[3] == 1)//触发了
             {
-                p_data.S_FCU_EFIS1_BARO_STD.value = 1;
+                p_data.S_FCU_EFIS1_BARO_STD.value = 2;
             }
             else
             {
@@ -487,8 +487,8 @@ namespace Hardware2Prosim320
             {
                 p_byteSend[1] = 0x16;
                 p_byteSend[2] = 0x05;
-                p_byteSend[3] = 0x18;
-                p_byteSend[4] = 0x19;
+                p_byteSend[3] = 0x12;
+                p_byteSend[4] = 0x13;
                 return p_byteSend;
             }
             if((int)(p_data.S_FCU_EFIS1_BARO_MODE.value)==1)
@@ -545,7 +545,7 @@ namespace Hardware2Prosim320
             p_data.S_FCU_EFIS2_LS.value = 1 - state[1];
             if (1 - state[0] == 1)//触发了
             {
-                p_data.S_FCU_EFIS2_BARO_STD.value = 2;
+                p_data.S_FCU_EFIS2_BARO_STD.value = 1;
             }
             else
             {
@@ -556,7 +556,7 @@ namespace Hardware2Prosim320
             state = SplitData(p_byteRead[3]);
             if (1 - state[3] == 1)//触发了
             {
-                p_data.S_FCU_EFIS2_BARO_STD.value = 1;
+                p_data.S_FCU_EFIS2_BARO_STD.value = 2;
             }
             else
             {
@@ -670,8 +670,8 @@ namespace Hardware2Prosim320
             {
                 p_byteSend[1] = 0x16;
                 p_byteSend[2] = 0x05;
-                p_byteSend[3] = 0x18;
-                p_byteSend[4] = 0x19;
+                p_byteSend[3] = 0x12;
+                p_byteSend[4] = 0x13;
                 return p_byteSend;
             }
             if ((int)(p_data.S_FCU_EFIS2_BARO_MODE.value) == 1)

@@ -1325,7 +1325,7 @@ namespace Hardware2Prosim320
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public void H2P_TQ2(byte[] p_byteRead, ref A320_Data_TQ p_data)
+   /*     public void H2P_TQ2(byte[] p_byteRead, ref A320_Data_TQ p_data)
         {
            
             int eng_e1 = p_byteRead[1];
@@ -1333,11 +1333,11 @@ namespace Hardware2Prosim320
            
             double f_t = 5.7;
             double f_r = 5.625;
-            int[] state = new int[4];
+            int[] state = new int[4];*/
             /*  eng_e1 = Unsigned2Signed(eng_e1);
               eng_e2 = Unsigned2Signed(eng_e2);*/
            
-            
+           /* 
                 if (eng_e1 == 0)
                 {
                     eng_e2 = (int)(225 + (eng_e2) * f_t);
@@ -1349,14 +1349,14 @@ namespace Hardware2Prosim320
                 //计算完成后赋值给Prosim变量
                 p_data.A_FC_ELEVATOR_TRIM.value = eng_e2;
             
-        }
+        }  */
 
         /// <summary>
         /// 油门台   配平轮随动
         /// </summary>
         /// <param name="p_byteRead"></param>
         /// <param name="p_data"></param>
-        public byte[] P2H_TQ_1(  ref A320_Data_TQ p_data)
+       /* public byte[] P2H_TQ_1(  ref A320_Data_TQ p_data)
         {
             byte[] p_byteSend = new byte[8];
             int trim = (int)((double)(p_data.FC_ELEVATOR.value) * 10);
@@ -1385,7 +1385,7 @@ namespace Hardware2Prosim320
             }
             return p_byteSend;
 
-        }
+        }  */
 
         /// <summary>
         /// 接收的无符号数转为有符号数

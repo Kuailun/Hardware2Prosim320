@@ -117,7 +117,7 @@
             this.textBox_YokeR.Name = "textBox_YokeR";
             this.textBox_YokeR.Size = new System.Drawing.Size(79, 21);
             this.textBox_YokeR.TabIndex = 37;
-            this.textBox_YokeR.Text = "COM14";
+            this.textBox_YokeR.Text = "COM5";
             // 
             // label5
             // 
@@ -144,7 +144,7 @@
             this.textBox_YokeL.Name = "textBox_YokeL";
             this.textBox_YokeL.Size = new System.Drawing.Size(79, 21);
             this.textBox_YokeL.TabIndex = 34;
-            this.textBox_YokeL.Text = "COM13";
+            this.textBox_YokeL.Text = "COM6";
             this.textBox_YokeL.TextChanged += new System.EventHandler(this.textBox_YokeL_TextChanged);
             // 
             // label6
@@ -172,7 +172,7 @@
             this.textBox_TQ.Name = "textBox_TQ";
             this.textBox_TQ.Size = new System.Drawing.Size(79, 21);
             this.textBox_TQ.TabIndex = 25;
-            this.textBox_TQ.Text = "COM22";
+            this.textBox_TQ.Text = "COM4";
             this.textBox_TQ.TextChanged += new System.EventHandler(this.textBox_TQ_TextChanged);
             // 
             // label2
@@ -200,7 +200,7 @@
             this.textBox_Glare.Name = "textBox_Glare";
             this.textBox_Glare.Size = new System.Drawing.Size(79, 21);
             this.textBox_Glare.TabIndex = 22;
-            this.textBox_Glare.Text = "COM23";
+            this.textBox_Glare.Text = "COM3";
             this.textBox_Glare.TextChanged += new System.EventHandler(this.textBox_Glare_TextChanged);
             // 
             // label1
